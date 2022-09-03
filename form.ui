@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>bilibili_get</class>
+ <widget class="QWidget" name="bilibili_get">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1070</width>
+    <height>654</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Widget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	color: red;
+	font-size: 20;
+}
+QLineEdit {
+	color: blue;
+	font-size: 20;
+}
+tabWidget{
+	color: green;
+	font-size: 15px;
+}</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>70</y>
+     <width>1071</width>
+     <height>581</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>主页</string>
+    </attribute>
+    <widget class="QPushButton" name="cookie_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>141</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>获得cookie</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="ztl">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>931</width>
+       <height>501</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="overwriteMode">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>940</x>
+       <y>60</y>
+       <width>121</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="start_bfq">
+        <property name="text">
+         <string>启动播放器</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>退出</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_5">
+    <property name="styleSheet">
+     <string notr="true">pushButton{
+	color: #070608;
+};</string>
+    </property>
+    <attribute name="title">
+     <string>搜索列表</string>
+    </attribute>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>960</x>
+       <y>10</y>
+       <width>93</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">*{
+	color: #070608;
+}</string>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>790</x>
+       <y>10</y>
+       <width>158</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
+     <property name="dragEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+     <property name="placeholderText">
+      <string>搜索内容</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>570</y>
+       <width>251</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>选定范围（就是每个结果前面的）</string>
+     </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>700</x>
+       <y>570</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sure</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="textEdit_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>1061</width>
+       <height>521</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>作者解析</string>
+    </attribute>
+    <widget class="QLineEdit" name="authorMid">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>551</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="getUsrInfo">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>30</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>解析作者</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="input_a">
+     <property name="geometry">
+      <rect>
+       <x>570</x>
+       <y>510</y>
+       <width>261</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>输入下载区间，详见“关于”</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="okForAuthor">
+     <property name="geometry">
+      <rect>
+       <x>840</x>
+       <y>510</y>
+       <width>111</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="videoOfAuthor">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>1031</width>
+       <height>411</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>关于</string>
+    </attribute>
+    <widget class="QTextEdit" name="about">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>1071</width>
+       <height>591</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1061</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>关于</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>命令页</string>
+    </attribute>
+    <widget class="QTextEdit" name="cmd">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>921</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>命令</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="cmdButton">
+     <property name="geometry">
+      <rect>
+       <x>960</x>
+       <y>10</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>执行</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="cmdReturn">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>200</y>
+       <width>1041</width>
+       <height>341</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QLineEdit" name="bv_line">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>311</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
+   <property name="placeholderText">
+    <string>bv号</string>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>20</y>
+     <width>391</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="sure_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>确定</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="unsure_button">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>取消</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="text">
+       <string>解析作者</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="userName">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>20</y>
+     <width>181</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
