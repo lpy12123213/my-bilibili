@@ -5,9 +5,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from func import Setting
 from time import sleep
+
 s = Setting('setting.json')
-s.init(['Qss', 'cookie', 'isBBDown', 'isCookieExists', 'isFirst', 'isLogin', 'isNeedBackground', 'isNeedLogin', 'playerEverytime', 'startSetting',
-       'thread', 'mostSearch'], ['C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss', '', False, False, False, True, False, True, False, False, False, 5])
+s.init(['Qss', 'cookie', 'isBBDown', 'isCookieExists', 'isFirst', 'isLogin', 'isNeedBackground', 'isNeedLogin',
+        'playerEverytime', 'startSetting',
+        'thread', 'mostSearch'],
+       ['C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss', '', False, False, False, True, False, True, False,
+        False, False, 5])
 s.saveEnd()
 
 
@@ -543,6 +547,13 @@ QSlider::sub-page:vertical {
         self.verticalLayout.addWidget(self.cookie)
         self.mostSearch = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
         self.mostSearch.setObjectName("mostSearch")
+        self.mostSearch.setStyleSheet("border-top-left-radius:10px;\n"
+                                      "border-top-right-radius:10px;\n"
+                                      "border-bottom-left-radius:10px;\n"
+                                      "border-bottom-right-radius:10px;\n"
+                                      "color: rgb(170, 255, 255);\n"
+                                      "border:1px solid rgb(255,255,255);\n"
+                                      "border-radius:20px;")
         self.verticalLayout.addWidget(self.mostSearch)
         self.QSSfile = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.QSSfile.setFlat(True)
@@ -556,7 +567,7 @@ QSlider::sub-page:vertical {
 
         self.retranslateUi(Setting)
         QtCore.QMetaObject.connectSlotsByName(Setting)
-        
+
         self.isNeedBackground.setChecked(self.s['isNeedBackground'])
         self.isNeedLogin.setChecked(self.s['isNeedLogin'])
         self.isLogin.setChecked(self.s['isLogin'])
@@ -565,6 +576,7 @@ QSlider::sub-page:vertical {
         self.downloadAll.setChecked(self.s['thread'])
         self.cookie.setText(self.s['cookie'])
         self.isBBDown.setChecked(self.s['isBBDown'])
+        self.mostSearch.setText(str(self.s['mostSearch']))
 
         self.pushButton.clicked.connect(self.commit)
         self.QSSfile.clicked.connect(self.openFile)
@@ -609,6 +621,7 @@ QSlider::sub-page:vertical {
             def _():
                 sleep(5)
                 os._exit(0)
+
             t = Thread(target=_)
             t.start()
 

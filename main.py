@@ -7,6 +7,7 @@ r"""
 不少的视频中都会有 "/" 的字符，这种字符会影响下载的保存位置，现在的解决办法是将所有的 "/" 和 "\" 替换掉
 """
 
+import cgitb
 import datetime
 import logging
 # noinspection PyUnresolvedReferences
@@ -32,7 +33,6 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from func import *
 # noinspection PyUnresolvedReferences
 from ua import ua
-import cgitb
 
 cgitb.enable(format='text')
 
@@ -51,7 +51,8 @@ path = os.getcwd()
 os.chdir(path)
 headers = {
     # 'user-agent': choice(ua)
-    'user-agant': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.27"
+    'user-agant': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 "
+                  "Safari/537.36 Edg/105.0.1343.27 "
 }
 
 logging.basicConfig(level=logging.INFO,
@@ -96,7 +97,8 @@ class Thread1(QThread):
     signal = pyqtSignal(list, bool, int)
 
     def __init__(self, key, header):
-        super(Thread1, self).__init__()
+        super().__init__()
+        self.result = None
         self.key = key
         self.header = header
 
@@ -111,6 +113,7 @@ class Thread2(QThread):
 
     def __init__(self, mid, header):
         super().__init__()
+        self.result = None
         self.key = mid
         self.header = header
 
@@ -124,6 +127,8 @@ class ThreadForAdvice(QThread):
 
     def __init__(self, text):
         super().__init__()
+        self.advice = None
+        self.respForSearchAdvide = None
         self.text = text
 
     def run(self):
@@ -151,7 +156,7 @@ class Ui_bilibili_get(object):
         bilibili_get.resize(1070, 654)
         self.op = QtWidgets.QGraphicsOpacityEffect()
         self.op.setOpacity(0.38888)
-        if setting.get("isNeedBackground") == False:
+        if not setting.get("isNeedBackground"):
             bilibili_get.setStyleSheet(style_sheet)
         else:
             bilibili_get.setStyleSheet("QPushButton {\n"
@@ -361,16 +366,41 @@ class Ui_bilibili_get(object):
         self.okForAuthor.setText(_translate("bilibili_get", "确定"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("bilibili_get", "作者解析"))
         self.about.setHtml(_translate("bilibili_get",
-                                      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
+                                      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+                                      "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n "
+                                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" "
+                                      "/><style type=\"text/css\">\n "
                                       "p, li { white-space: pre-wrap; }\n"
-                                      "</style></head><body style=\" font-family:\'Microsoft YaHei UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-                                      "<ol style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">本软件只提供视频解析，不提供任何资源上传、存储到服务器的功能。</li>\n"
-                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">本软件仅解析来自B站的内容，不会对解析到的音视频进行二次编码，部分视频会进行有限的格式转换、拼接等操作。</li>\n"
-                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">本软件解析得到的所有内容均来自B站UP主上传、分享，其版权均归原作者所有。内容提供者、上传者（UP主）应对其提供、上传的内容承担全部责任。</li>\n"
-                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:700;\">本软件提供的所有内容，仅可用作学习交流使用，未经原作者授权，禁止用于其他用途。请在下载24小时内删除。为尊重作者版权，请前往资源的原始发布网站观看，支持原创，谢谢。</span></li>\n"
-                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">因使用本软件产生的版权问题，软件作者概不负责。</li></ol>\n"
-                                      "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\"><br /></span></p></body></html>"))
+                                      "</style></head><body style=\" font-family:\'Microsoft YaHei UI\'; "
+                                      "font-size:9pt; font-weight:400; font-style:normal;\">\n\"<ol "
+                                      "style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: "
+                                      "0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Open Sans\',\'Helvetica "
+                                      "Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" "
+                                      "margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; "
+                                      "-qt-block-indent:0; text-indent:0px;\">本软件只提供视频解析，不提供任何资源上传、存储到服务器的功能。</li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">本软件仅解析来自B站的内容，不会对解析到的音视频进行二次编码，部分视频会进行有限的格式转换、拼接等操作。</li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">本软件解析得到的所有内容均来自B站UP主上传、分享，其版权均归原作者所有。内容提供者、上传者（UP"
+                                      "主）应对其提供、上传的内容承担全部责任。</li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\"><span style=\" "
+                                      "font-weight:700;\">本软件提供的所有内容，仅可用作学习交流使用，未经原作者授权，禁止用于其他用途。请在下载24"
+                                      "小时内删除。为尊重作者版权，请前往资源的原始发布网站观看，支持原创，谢谢。</span></li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">因使用本软件产生的版权问题，软件作者概不负责。</li></ol>\n "
+                                      "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+                                      "margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+                                      "font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',"
+                                      "\'sans-serif\'; color:#606c71;\"><br /></span></p></body></html>"))
         self.label_4.setText(_translate("bilibili_get", "关于"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("bilibili_get", "关于"))
         self.cmd.setPlaceholderText(_translate("bilibili_get", "命令"))
@@ -385,7 +415,7 @@ class Ui_bilibili_get(object):
         self.pushButton_5.setText(_translate("bilibili_get", "解析作者"))
         self.lineEdit.textChanged.connect(self.searchAdvice)
 
-        if setting["isNeedBackground"] == True:
+        if setting["isNeedBackground"]:
             self.tabWidget.setGraphicsEffect(self.op)
             self.tabWidget.setAutoFillBackground(True)
 
@@ -643,7 +673,7 @@ def main1():
         perc = perclip.paste()
         ret = re_1obj.search(perc)
         # 判断是不是没匹配到，若是，便退出函数
-        if ret == None:
+        if ret is None:
             return None
         return (ret.group(1))
 
@@ -687,7 +717,7 @@ def main2():
     w = QWidget()
     ui.setupUi(w)
 
-    def get_bv_from_paste() -> str:  # 从剪贴版中获取bilibili链接
+    def get_bv_from_paste():  # 从剪贴版中获取bilibili链接
         re_1obj = re.compile(
             r'(?:https|http)://www.bilibili.com/video/([^?/]+)?(?:\?.*){0,1}')
         perc = perclip.paste()

@@ -68,7 +68,7 @@ def printf(*args, sep=' ', end='\n'):
 def setVar(name: list, val=None):
     """
     SET MORE VAR
-    >>> setVar([f"n{i}"] for i in range(1, 51), [i for i in range(50)])
+    >>> setVar(([f"n{i}"] for i in range(1, 51)), [i for i in range(50)])
     >>> n1
     0
     >>> n2
@@ -293,7 +293,7 @@ class Setting(object):
         print all values and keys in self.setting
         """
         pprint.pprint(self.set)
-    
+
     def isExists(self, key, val=None):
         a = key in self.getKey()
         if val is None:
@@ -445,29 +445,30 @@ def get_cid(bv, headers):
     return return_text
 
 
+def get_cid(bv, headers):
+    __url = "https://api.bilibili.com/x/web-interface/view"
+    data = {
+        'bvid': bv,
+    }
+    resp = requests.get(__url, headers=headers, params=data)
+    resp.encoding = 'utf-8'
+    resp.raise_for_status()
+    json_response = resp.json()
+    return_text = []
+    # print(json_response)
+    try:
+        for i in json_response['data']['pages']:
+            return_text.append(i['cid'])
+    except:
+        return_text.append(json_response['data']['cid'])
+    return return_text
+
+
 def get_video_info(bv, headers):
     if bv[:2].lower() == 'av':
         bv = av2bv(bv)
 
-    def get_cid():
-        __url = "https://api.bilibili.com/x/web-interface/view"
-        data = {
-            'bvid': bv,
-        }
-        resp = requests.get(__url, headers=headers, params=data)
-        resp.encoding = 'utf-8'
-        resp.raise_for_status()
-        json_response = resp.json()
-        return_text = []
-        # print(json_response)
-        try:
-            for i in json_response['data']['pages']:
-                return_text.append(i['cid'])
-        except:
-            return_text.append(json_response['data']['cid'])
-        return return_text
-
-    cidlist = get_cid()
+    cidlist = get_cid(bv, headers)
     if len(cidlist) == 1:
         cid = cidlist[0]
         _url = 'http://api.bilibili.com/x/player/playurl'
@@ -615,16 +616,22 @@ def download_video(bv, headers, page=1, isLog=True) -> int:
     clean(a['filename'])
     clean(b['filename'])
     return 0
-
-
+def downloadWithJson(json, header, page=None):
+    """
+    if page is None, download all
+    download from get_video_info(bv, headers)
+    """
+    if page is None:
+        for i in json:
+            pass
+            # TODO: 完成多视频解析
+             
 def kill() -> None:
     '''
     # taskill杀进程
     '''
     subprocess.call(f"taskkill /F /PID aria2c.exe")
     subprocess.call(f"taskkill /F /PID ffmpeg.exe")
-
-
 def search(keywords, headers, pages=0):
     ret = []
     s = Setting('setting.json', mode='r')
@@ -681,8 +688,6 @@ def search(keywords, headers, pages=0):
             temp['author'] = data[i]['author']
             ret.append(temp)
         return ret
-
-
 def getSearchAdvice(key):
     _url = "http://s.search.bilibili.com/main/suggest"
     data = {
@@ -691,8 +696,6 @@ def getSearchAdvice(key):
     resp = requests.get(_url, params=data)
     resp.encoding = 'utf-8'
     return resp.json()
-
-
 def get_usr_video(id, ua):
     '''
     # 获取用户视频
@@ -745,8 +748,6 @@ def get_usr_video(id, ua):
                     for i in json1
                     ]
         return ret
-
-
 def get_usr_pic(id):
     url = 'http://api.bilibili.com/x/space/acc/info'
     data = {
@@ -760,8 +761,6 @@ def get_usr_pic(id):
     url = json1['face']
     rsp = requests.get(url)
     return (rsp, json1['name'])
-
-
 def ip_get():
     """
     由bilibili提供的测ip服务
@@ -769,15 +768,11 @@ def ip_get():
     resp = requests.get('http://api.bilibili.com/x/web-interface/zone')
     resp = resp.json()
     return resp['data']
-
-
 def get_usr_mid(bv, header):
     _url = 'http://api.bilibili.com/x/web-interface/view'
     rsp = requests.get(_url, params={'bvid': bv}, headers=header)
     json1 = rsp.json()
     return json1['data']['owner']['mid']
-
-
 def analysis(string: str):
     """
     A function to analysis a str
@@ -800,5 +795,6 @@ def analysis(string: str):
             ret += [j for j in range(a, b + 1)]
     ret = list(set(ret))
     return ret
+
 # test
 # download_video('BV1et411b73Z', headers=header)
