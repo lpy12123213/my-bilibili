@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>663</width>
-    <height>376</height>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
    <property name="geometry">
     <rect>
      <x>560</x>
-     <y>330</y>
+     <y>360</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -56,7 +56,7 @@ border-bottom-right-radius</string>
      <x>20</x>
      <y>10</y>
      <width>581</width>
-     <height>311</height>
+     <height>331</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -173,13 +173,23 @@ border:1px solid rgb(255,255,255);
 border-radius:20px;</string>
         </property>
         <property name="text">
-         <string extracomment="cookie值">cookie值（不填为空）</string>
+         <string extracomment="cookie值"/>
         </property>
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="placeholderText">
+         <string>cookie值（不填为空）</string>
+        </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="mostSearch">
+        <property name="placeholderText">
+         <string>最多搜索页面</string>
         </property>
        </widget>
       </item>
@@ -203,19 +213,6 @@ border-radius:20px;</string>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QCommandLinkButton" name="commandLinkButton">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>330</y>
-     <width>381</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>我的主页中有很多好康的，来了，来看就知道啦</string>
-   </property>
   </widget>
  </widget>
  <resources/>

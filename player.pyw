@@ -50,7 +50,6 @@ class Ui_Widget(QMainWindow):
         self.pushButton.clicked.connect(self.openVideoFile)
 
     def openVideoFile(self):
-        print('open file')
         # 播放网络视频
         # self.player.setMedia(QMediaContent(QUrl.fromLocalFile("https://vd1.bdstatic.com/mda-hg6uempmez9u6mqi/sc/mda-hg6uempmez9u6mqi.mp4?auth_key=1562172911-0-0-4c22196ad1d0fcc49402d91336c999c5&bcevod_channel=searchbox_feed&pd=bjh&abtest=all")))
         # 选择本地视频播放

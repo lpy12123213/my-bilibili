@@ -5,14 +5,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from func import Setting
 from time import sleep
-sys.stdout = open(".\\print.out", "a")
+s = Setting('setting.json')
+s.init(['Qss', 'cookie', 'isBBDown', 'isCookieExists', 'isFirst', 'isLogin', 'isNeedBackground', 'isNeedLogin', 'playerEverytime', 'startSetting',
+       'thread', 'mostSearch'], ['C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss', '', False, False, False, True, False, True, False, False, False, 5])
+s.saveEnd()
+
 
 class Ui_Setting(object):
     s = Setting('setting.json')
 
     def setupUi(self, Setting):
         Setting.setObjectName("Setting")
-        Setting.resize(663, 376)
+        Setting.resize(663, 404)
         Setting.setStyleSheet("""/*
 Material Dark Style Sheet for QT Applications
 Author: Jaime A. Quiroga P.
@@ -463,7 +467,7 @@ QSlider::sub-page:vertical {
 }
 /* 感谢提供此模板的大佬 */""")
         self.pushButton = QtWidgets.QPushButton(Setting)
-        self.pushButton.setGeometry(QtCore.QRect(560, 330, 93, 29))
+        self.pushButton.setGeometry(QtCore.QRect(560, 360, 93, 29))
         self.pushButton.setStyleSheet("border-radius\n"
                                       "border-top-left-radius\n"
                                       "border-top-right-radius\n"
@@ -474,7 +478,7 @@ QSlider::sub-page:vertical {
         self.pushButton.setFlat(True)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayoutWidget = QtWidgets.QWidget(Setting)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 10, 581, 311))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 10, 581, 331))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(
             self.horizontalLayoutWidget)
@@ -490,22 +494,22 @@ QSlider::sub-page:vertical {
                                             "        border-top-right-radius\n"
                                             "        border-bottom-left-radius\n"
                                             "        border-bottom-right-radius")
-        self.isNeedBackground.setChecked(self.s['isNeedBackground'])
+        self.isNeedBackground.setChecked(True)
         self.isNeedBackground.setAutoRepeat(False)
         self.isNeedBackground.setAutoExclusive(False)
         self.isNeedBackground.setTristate(False)
         self.isNeedBackground.setObjectName("isNeedBackground")
         self.verticalLayout.addWidget(self.isNeedBackground)
         self.isNeedLogin = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
-        self.isNeedLogin.setChecked(self.s['isNeedLogin'])
+        self.isNeedLogin.setChecked(True)
         self.isNeedLogin.setObjectName("isNeedLogin")
         self.verticalLayout.addWidget(self.isNeedLogin)
         self.isLogin = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
-        self.isLogin.setChecked(self.s['isLogin'])
+        self.isLogin.setChecked(True)
         self.isLogin.setObjectName("isLogin")
         self.verticalLayout.addWidget(self.isLogin)
         self.isBBDown = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
-        self.isBBDown.setEnabled(self.s["isBBDown"])
+        self.isBBDown.setEnabled(False)
         self.isBBDown.setObjectName("isBBDown")
         self.verticalLayout.addWidget(self.isBBDown)
         self.playerEverytime = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
@@ -514,16 +518,14 @@ QSlider::sub-page:vertical {
         self.verticalLayout.addWidget(self.playerEverytime)
         self.start = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
         self.start.setEnabled(False)
-        self.start.setChecked(self.s['startSetting'])
         self.start.setObjectName("start")
         self.verticalLayout.addWidget(self.start)
         self.threadOne = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
         self.threadOne.setEnabled(False)
         self.threadOne.setObjectName("threadOne")
-        self.threadOne.setChecked(self.s['thread'])
         self.verticalLayout.addWidget(self.threadOne)
         self.downloadAll = QtWidgets.QCheckBox(self.horizontalLayoutWidget)
-        self.downloadAll.setEnabled(False)
+        # self.downloadAll.setEnabled(False)
         self.downloadAll.setObjectName("downloadAll")
         self.verticalLayout.addWidget(self.downloadAll)
         self.cookie = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
@@ -534,10 +536,14 @@ QSlider::sub-page:vertical {
                                   "color: rgb(170, 255, 255);\n"
                                   "border:1px solid rgb(255,255,255);\n"
                                   "border-radius:20px;")
+        self.cookie.setText("")
         self.cookie.setFrame(False)
         self.cookie.setClearButtonEnabled(True)
         self.cookie.setObjectName("cookie")
         self.verticalLayout.addWidget(self.cookie)
+        self.mostSearch = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
+        self.mostSearch.setObjectName("mostSearch")
+        self.verticalLayout.addWidget(self.mostSearch)
         self.QSSfile = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.QSSfile.setFlat(True)
         self.QSSfile.setObjectName("QSSfile")
@@ -547,12 +553,18 @@ QSlider::sub-page:vertical {
         self.label.setText("")
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        # self.commandLinkButton = QtWidgets.QCommandLinkButton(Setting)
-        # self.commandLinkButton.setGeometry(QtCore.QRect(80, 330, 381, 41))
-        # self.commandLinkButton.setObjectName("commandLinkButton")
 
         self.retranslateUi(Setting)
         QtCore.QMetaObject.connectSlotsByName(Setting)
+        
+        self.isNeedBackground.setChecked(self.s['isNeedBackground'])
+        self.isNeedLogin.setChecked(self.s['isNeedLogin'])
+        self.isLogin.setChecked(self.s['isLogin'])
+        self.playerEverytime.setChecked(self.s['playerEverytime'])
+        self.start.setChecked(self.s['startSetting'])
+        self.downloadAll.setChecked(self.s['thread'])
+        self.cookie.setText(self.s['cookie'])
+        self.isBBDown.setChecked(self.s['isBBDown'])
 
         self.pushButton.clicked.connect(self.commit)
         self.QSSfile.clicked.connect(self.openFile)
@@ -570,28 +582,26 @@ QSlider::sub-page:vertical {
         self.threadOne.setText(_translate("Setting", "下载启用多线程"))
         self.downloadAll.setText(_translate("Setting", "下载多个视频（暂不开启）"))
         self.cookie.setPlaceholderText(_translate("Setting", "cookie值（不填为空）"))
-        self.cookie.setText(_translate("Setting", self.s['cookie']))
+        self.mostSearch.setPlaceholderText(_translate("Setting", "最多搜索页面"))
         self.QSSfile.setText(_translate("Setting", "选择QSS文件"))
-        # self.commandLinkButton.setText(
-        # _translate("Setting", "我的主页中有很多好康的，来了，来看就知道啦"))
 
     def openFile(self):
         # 如果添加一个内容则需要加两个分号
         fname, ftype = QFileDialog.getOpenFileName(
             None, "Open File", "./bin/style/", "All Files(*);;Wav(*.wav);;Txt (*.txt)")
         if fname:
-            self.s.change('Qss', fname)
+            self.s['Qss'] = fname
 
     def commit(self):
         try:
-            self.s.change('isNeedBackground',
-                          self.isNeedBackground.isChecked())
-            self.s.change('isNeedLogin', self.isNeedLogin.isChecked())
-            self.s.change('isLogin', self.isLogin.isChecked())
-            self.s.change('isBBDown', self.isBBDown.isChecked())
-            self.s.change('cookie', self.cookie.text())
-            self.s.change('startSetting', self.start.isChecked())
-            self.s.change('thread', self.threadOne.isChecked())
+            self.s['isNeedBackground'] = self.isNeedBackground.isChecked()
+            self.s['isNeedLogin'] = self.isNeedLogin.isChecked()
+            self.s['isLogin'] = self.isLogin.isChecked()
+            self.s['isBBDown'] = self.isBBDown.isChecked()
+            self.s['cookie'] = self.cookie.text()
+            self.s['startSetting'] = self.start.isChecked()
+            self.s['thread'] = self.downloadAll.isChecked()
+            self.s['mostSearch'] = int(self.mostSearch.text())
         finally:
             self.label.setText("设置成功")
             self.s.saveEnd()

@@ -3,6 +3,8 @@
 '''
 import json
 # import time
+import sys
+
 import requests
 import subprocess
 import os
@@ -32,7 +34,48 @@ def get_variable_name(variable):
     return [var_name for var_name, var_val in callers_local_vars if var_val is variable]
 
 
+sysLog = sys.stdout
+
+
+def printf(*args, sep=' ', end='\n'):
+    """
+    Like the function `print()`.
+    I write it to do this:
+    >>> printf("My life")
+    Myl life
+    >>> sysLog = open("log.log", "a")
+    >>> printf("HI")
+    In the file 'log.log':
+    EOF;
+    >>> printf("MY PRINT FUNCTION")
+    In the file 'log.log':
+    EOF;
+    >>> sysLog.close()
+    In the file 'log.log':
+    HI
+    MY PRINT FUNCTION
+    EOF;
+    """
+    ret = ''
+    for i in args[0:-1]:
+        ret += str(i)
+        ret += sep
+    ret += str(args[-1])
+    ret += end
+    sysLog.write(ret)
+
+
 def setVar(name: list, val=None):
+    """
+    SET MORE VAR
+    >>> setVar([f"n{i}"] for i in range(1, 51), [i for i in range(50)])
+    >>> n1
+    0
+    >>> n2
+    1
+    >>> print(n1, n2, n3 ... n10)
+    0 1 2 3 4 5 6 7 8 9
+    """
     names = globals()
     if type(val) == type([1, 2, 3]):
         for i in range(len(val)):
@@ -67,7 +110,7 @@ def aesEncrypt(key, data):
     result = cipher.encrypt(data.encode())
     encodestrs = base64.b64encode(result)
     enctext = encodestrs.decode('utf8')
-    print(enctext)
+    printf(enctext)
     return enctext
 
 
@@ -99,16 +142,13 @@ class SetErr(Exception):
 
 
 class Setting(object):
-    """
-    a class of pswList
-    """
     set = {}
 
     # @overload
     def __init__(self, filename, name=None, value=None, mode='a', isformat=True):
         """
-        set `self.filename`, `self.text`, `self.mode`
-        and set self.set
+        setting `self.filename`, `self.text`, `self.mode`
+        and setting self.setting
         """
         # 由于open函数不可以又读又写
         # 所以需要有一个读的对象以及一个写的对象
@@ -132,14 +172,41 @@ class Setting(object):
     def __getitem__(self, text):
         return self.set[text]
 
+    def __setitem__(self, text, value):
+        self.set[text] = value
+
+    def __delitem__(self, text):
+        del self.set[text]
+
     def save(self):
         """
         save the dictionary in your file
+        >>> a = Setting(".json")
+        >>> a["l"] = 10
+        >>> a.getKey()
+        ["l"]
+        >>> a.save()
+        >>> with open(".json") as f:
+        >>>     text = f.read()
+        >>> text
+        '''{
+            "l": 10
+        }'''
+        >>> a["q"] = 20
+        >>> with open(".json") as f:
+        >>>     text = f.read()
+        >>> text
+        '''{
+            "l": 10,
+            "q": 20
+        }'''
+        >>> a.getKey()
+        ["l", "q"]
         """
         if self.isformat:
-            s = json.dumps(self.set, sort_keys=True, indent=4)
+            s: str = json.dumps(self.set, sort_keys=True, indent=4)
         else:
-            s = self.dumps(self.set)
+            s: str = json.dumps(self.set)
         with open(self.filename, 'w') as f:
             f.write(s)
         self.io = open(self.filename, self.mode)
@@ -183,16 +250,18 @@ class Setting(object):
 
     def __len__(self):
         """
-        :return the length of self.set
+        :return the length of self.setting
         """
         return len(self.set)
 
     def change(self, name, value):
         """
-        change a value in self.set
+        change a value in self.setting
         if it's not exists, it will be created
+        it will save
         """
         self.set[name] = value
+        self.save()
 
     def get(self, name, default=None):
         """
@@ -202,28 +271,35 @@ class Setting(object):
 
     def clear(self):
         """
-        clear all values and keys in self.set
+        clear all values and keys in self.setting
         """
         self.set.clear()
 
     def delete(self, name):
         """
-        delete a pair of value and key in self.set
+        delete a pair of value and key in self.setting
         """
         del self.set[name]
 
     def memset(self, value):
         """
-        like `memset` function in c++, but it will only set all values, not keys
+        like `memset` function in c++, but it will only setting all values, not keys
         """
         for i in self.set:
             self.set[i] = value
 
     def print(self):
         """
-        print all values and keys in self.set
+        print all values and keys in self.setting
         """
         pprint.pprint(self.set)
+    
+    def isExists(self, key, val=None):
+        a = key in self.getKey()
+        if val is None:
+            return a
+        else:
+            return a or self.set[key] == val
 
     def getKey(self):
         ret = [i for i in self.set]
@@ -245,6 +321,12 @@ class Setting(object):
     def close(self):
         self.io.close()
         self.io_r.close()
+
+    def init(self, key: list, value: list):
+        for i in range(len(key)):
+            if key[i] not in self.getKey():
+                self.set[key[i]] = value[i]
+        self.save()
 
     def __del__(self):
         self.close()
@@ -322,7 +404,7 @@ class DownloadErr(Exception):
 def get_bv_from_url(text):
     pattern = re.compile(r'https://www.bilibili.com/video/(.+)?\?.*')
     bv = re.findall(pattern, text)
-    print(bv)
+    printf(bv)
     return bv[0]
 
 
@@ -445,7 +527,7 @@ def download(json, bv, page=1, name=None) -> dict:
         bv = av2bv(bv)
     if name is None:
         name = bv
-    ds = fr"""{path}\bin\aria2c -s 32 --dir=.\temp\ -D -o "{name}.m4s" "{json}" --referer=https://www.bilibili.com/video/{bv}?p={page}"""
+    ds = f"""{path}\\bin\\aria2c -s 32 --dir=.\\temp\\ -D -o "{name}.m4s" "{json}" --referer=https://www.bilibili.com/video/{bv}?p={page}"""
     subprocess.call(ds)
     return {'filename': name + '.m4s', 'name': name}
 
@@ -468,10 +550,12 @@ def clean(filename: str) -> None:
     subprocess.call(f"del \"{path}\\temp\\{filename}\"", shell=True)
 
 
-def download_video(bv, headers, page=1) -> int:
+def download_video(bv, headers, page=1, isLog=True) -> int:
     if bv[:2].lower() == 'av':
         bv = av2bv(bv)
     try:
+        if isLog:
+            printf("获取视频信息")
         json1 = get_video_info(bv, headers)
     except KeyError:
         return 1
@@ -490,18 +574,26 @@ def download_video(bv, headers, page=1) -> int:
             # 咋加一个批量化这么难呢？
             url = json1[0]['data']['dash']['video'][0]['baseUrl']
             title = get_video_title_or_desc(bv, headers=headers)['title']
+            title = title.replace("/", "").replace("\\", "")
+            if isLog:
+                printf("下载视频部分")
             a = download(url, bv, page, name=title)
             url = json1[0]['data']['dash']['audio'][0]['baseUrl']
+            if isLog:
+                printf("下载音频部分")
             b = download_music(
                 url, bv, page, name=title)
         else:
             url = json1['data']['dash']['video'][0]['baseUrl']
             title = get_video_title_or_desc(bv, headers=headers)['title']
+            if isLog:
+                printf("下载视频部分")
             a = download(url, bv, page, name=title)
             try:
                 url = json1['data']['dash']['audio'][0]['baseUrl']
-                b = download_music(
-                    url, bv, page, name=title)
+                if isLog:
+                    printf("下载音频部分")
+                b = download_music(url, bv, page, name=title)
             except KeyError:
                 process = subprocess.call(
                     f"{path}\\bin\\ffmpeg -y -i \"{path}\\temp\\{a['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\"",
@@ -522,7 +614,7 @@ def download_video(bv, headers, page=1) -> int:
     # 删除临时文件
     clean(a['filename'])
     clean(b['filename'])
-    return process
+    return 0
 
 
 def kill() -> None:
@@ -533,27 +625,72 @@ def kill() -> None:
     subprocess.call(f"taskkill /F /PID ffmpeg.exe")
 
 
-def search(keywords, headers):
+def search(keywords, headers, pages=0):
+    ret = []
+    s = Setting('setting.json', mode='r')
+    if pages == 0:
+        for i in range(1, s['mostSearch'] + 1):
+            data = {
+                'keyword': keywords,
+                "page": i
+            }
+            res = requests.get(
+                "http://api.bilibili.com/x/web-interface/search/all/v2",
+                headers=headers,
+                params=data
+            )
+            try:
+                res.raise_for_status()
+            except:
+                return ret
+            js = res.json()
+            try:
+                data = js['data']['result'][10]['data']
+            except:
+                return 1
+            for i in range(len(data)):
+                temp = {}
+                temp['title'] = data[i]['title']
+                temp['bvid'] = data[i]['bvid']
+                temp['author'] = data[i]['author']
+                ret.append(temp)
+        return ret
+    else:
+        data = {
+            'keyword': keywords,
+            "page": pages
+        }
+        res = requests.get(
+            "http://api.bilibili.com/x/web-interface/search/all/v2",
+            headers=headers,
+            params=data
+        )
+        try:
+            res.raise_for_status()
+        except:
+            return ret
+        js = res.json()
+        try:
+            data = js['data']['result'][10]['data']
+        except:
+            return 1
+        for i in range(len(data)):
+            temp = {}
+            temp['title'] = data[i]['title']
+            temp['bvid'] = data[i]['bvid']
+            temp['author'] = data[i]['author']
+            ret.append(temp)
+        return ret
+
+
+def getSearchAdvice(key):
+    _url = "http://s.search.bilibili.com/main/suggest"
     data = {
-        'keyword': keywords
+        "term": key
     }
-    res = requests.get(
-        "http://api.bilibili.com/x/web-interface/search/all/v2",
-        headers=headers,
-        params=data
-    )
-    res.raise_for_status()
-    js = res.json()
-    try:
-        data = js['data']['result'][10]['data']
-    except:
-        return 1
-    ret = [{} for i in range(len(data))]
-    for i in range(len(data)):
-        ret[i]['title'] = data[i]['title']
-        ret[i]['bvid'] = data[i]['bvid']
-        ret[i]['author'] = data[i]['author']
-    return ret
+    resp = requests.get(_url, params=data)
+    resp.encoding = 'utf-8'
+    return resp.json()
 
 
 def get_usr_video(id, ua):
@@ -564,20 +701,50 @@ def get_usr_video(id, ua):
     mid: 用户ID，纯数字
     user-agent: UA(好像不加也行，但还是加一下)
     '''
-    url = 'https://api.bilibili.com/x/space/arc/search'
-    data = {
-        'mid': id
-    }
     headers = ua
-    resp = requests.get(url, headers=headers, params=data)
-    json1 = resp.json()['data']['list']['vlist']
-    ret = [{'bvid': i['bvid'],
-            'title': i['title'],
-            'author': i['author'],
-            'desc': i['description']}
-           for i in json1
-           ]
-    return ret
+    url = 'https://api.bilibili.com/x/space/arc/search'
+
+    def get_count(id, ua):
+        headers = ua
+        url = 'https://api.bilibili.com/x/space/arc/search'
+        resp = requests.get(url, headers=headers, params={'mid': id})
+        count = resp.json()['data']['page']['count']
+        resp.close()
+        return count
+
+    count = get_count(id, ua)
+    if count <= 50:
+        data = {
+            'mid': id,
+            'ps': 50
+        }
+        resp = requests.get(url, headers=headers, params=data)
+        json1 = resp.json()['data']['list']['vlist']
+        ret = [{'bvid': i['bvid'],
+                'title': i['title'],
+                'author': i['author'],
+                'desc': i['description']}
+               for i in json1
+               ]
+        return ret
+    else:
+        ret = []
+        p = int(count / 50) + 1
+        for i in range(p):
+            data = {
+                'mid': id,
+                'ps': 50,
+                'pn': i + 1
+            }
+            resp = requests.get(url, headers=headers, params=data)
+            json1 = resp.json()['data']['list']['vlist']
+            ret += [{'bvid': i['bvid'],
+                     'title': i['title'],
+                     'author': i['author'],
+                     'desc': i['description']}
+                    for i in json1
+                    ]
+        return ret
 
 
 def get_usr_pic(id):
@@ -592,13 +759,13 @@ def get_usr_pic(id):
     json1 = resp.json()['data']
     url = json1['face']
     rsp = requests.get(url)
-    return (rsp.content, json1['name'])
+    return (rsp, json1['name'])
 
 
 def ip_get():
-    '''
+    """
     由bilibili提供的测ip服务
-    '''
+    """
     resp = requests.get('http://api.bilibili.com/x/web-interface/zone')
     resp = resp.json()
     return resp['data']
@@ -609,5 +776,29 @@ def get_usr_mid(bv, header):
     rsp = requests.get(_url, params={'bvid': bv}, headers=header)
     json1 = rsp.json()
     return json1['data']['owner']['mid']
+
+
+def analysis(string: str):
+    """
+    A function to analysis a str
+    >>> analysis("1, 2, 3-5")
+    [1, 2, 3, 4, 5]
+    >>> analysis("5-10")
+    [5, 6, 7, 8, 9, 10]
+    >>> analysis("3, 2, 1, 1, 10-15")
+    [1, 2, 3, 10, 11, 12, 13, 14, 15]
+    """
+    wait = string.replace(" ", "").split(",")
+    ret = []  # a setting
+    for i in wait:
+        if "-" not in i:
+            ret.append(int(i))
+        else:
+            a, b = i.split("-")
+            a = int(a)
+            b = int(b)
+            ret += [j for j in range(a, b + 1)]
+    ret = list(set(ret))
+    return ret
 # test
 # download_video('BV1et411b73Z', headers=header)
