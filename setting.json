@@ -1,5 +1,5 @@
 {
-    "Qss": "C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss",
+    "Qss": "./bin/style/style.qss",
     "cookie": "*****",
     "isBBDown": false,
     "isCookieExists": false,
@@ -8,7 +8,7 @@
     "isLogin": true,
     "isNeedBackground": false,
     "isNeedLogin": true,
-    "mostSearch": 1,
+    "mostSearch": 5,
     "playerEverytime": false,
     "startSetting": false,
     "thread": true
