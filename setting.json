@@ -1,6 +1,6 @@
 {
-    "Qss": "./bin/style/style.qss",
-    "cookie": "*****",
+    "Qss": "./bin/style/White.qss",
+    "cookie": "",
     "isBBDown": false,
     "isCookieExists": false,
     "isDebugging": true,
@@ -11,5 +11,6 @@
     "mostSearch": 5,
     "playerEverytime": false,
     "startSetting": false,
-    "thread": true
+    "thread": true,
+    "workplace": "./bin/style/"
 }

@@ -1,9 +1,9 @@
 import os
 import sys
 from threading import Thread
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
-from func import Setting
+from module.func import Setting
 from time import sleep
 
 s = Setting('setting.json')
@@ -12,6 +12,7 @@ s.init(['Qss', 'cookie', 'isBBDown', 'isCookieExists', 'isFirst', 'isLogin', 'is
         'thread', 'mostSearch'],
        ['C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss', '', False, False, False, True, False, True, False,
         False, False, 5])
+s['cookie'] = ''
 s.saveEnd()
 
 
@@ -580,6 +581,7 @@ QSlider::sub-page:vertical {
 
         self.pushButton.clicked.connect(self.commit)
         self.QSSfile.clicked.connect(self.openFile)
+        self.setUI()
 
     def retranslateUi(self, Setting):
         _translate = QtCore.QCoreApplication.translate
@@ -615,7 +617,7 @@ QSlider::sub-page:vertical {
             self.s['thread'] = self.downloadAll.isChecked()
             self.s['mostSearch'] = int(self.mostSearch.text())
         finally:
-            self.label.setText("设置成功")
+            # self.label.setText("设置成功")
             self.s.saveEnd()
 
             def _():
@@ -624,6 +626,13 @@ QSlider::sub-page:vertical {
 
             t = Thread(target=_)
             t.start()
+
+    def setUI(self):
+        s = self.s.set
+        self.isNeedBackground.setChecked(s['isNeedBackground'])
+        self.isNeedBackground.setChecked(s['isNeedBackground'])
+        self.isNeedBackground.setChecked(s['isNeedBackground'])
+        self.isNeedBackground.setChecked(s['isNeedBackground'])
 
 
 if __name__ == "__main__":
