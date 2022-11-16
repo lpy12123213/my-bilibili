@@ -52,7 +52,6 @@ headers = {
     # 'user-agant': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 "
     #               "Safari/537.36 Edg/105.0.1343.27 "
 }
-
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s %(levelname)s %(message)s',
                     filename='.\\log\\.log',
@@ -61,7 +60,6 @@ path = setting['workplace']
 if not os.path.isdir(os.path.join(path, "video") + "\\"):
     os.mkdir(os.path.join(path, "video") + "\\")
     logging.debug("创建文件夹video")
-
 # if not os.path.isdir(os.path.join(path, "temp") + "\\"):
 #     os.mkdir(os.path.join(path, "temp") + "\\")
 #     logging.debug("创建文件夹temp")

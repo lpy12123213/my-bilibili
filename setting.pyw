@@ -630,10 +630,15 @@ QSlider::sub-page:vertical {
     def setUI(self):
         s = self.s.set
         self.isNeedBackground.setChecked(s['isNeedBackground'])
-        self.isNeedBackground.setChecked(s['isNeedBackground'])
-        self.isNeedBackground.setChecked(s['isNeedBackground'])
-        self.isNeedBackground.setChecked(s['isNeedBackground'])
-
+        self.isLogin.setChecked(s['isLogin'])
+        self.isNeedLogin.setChecked(s['isNeedLogin'])
+        self.playerEverytime.setChecked(s['playerEverytime'])
+        self.threadOne.setChecked(s['threadOne'])
+        self.downloadAll.setChecked(s['downloadAll'])
+        self.isBBDown.setChecked(s['isBBDown'])
+        self.start.setChecked(s['startSetting'])
+        self.cookie.setText(s["cookie"] if s["cookie"] != {} else "")
+        self.mostSearch.setText(str(s["mostSearch"]))
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
