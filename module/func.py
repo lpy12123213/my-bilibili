@@ -1139,7 +1139,6 @@ def aesDecrypt(key, data):
 # 版权声明：本文为CSDN博主「hresh」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 # 原文链接：https://blog.csdn.net/Herishwater/article/details/92131547'''
 
-
 class SetErr(Exception):
     def __init__(self, message):
         self.message = message
@@ -1557,8 +1556,12 @@ def download_music(json, bv, page=1, name=None) -> dict:
 def clean(filename: str) -> None:
     subprocess.call(f"del \"{path}\\temp\\{filename}\"", shell=True)
 
+def makedirs(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
 
 def download_video(bv, headers, page=1, isLog=True, path="."):
+    makedirs(os.path.join(path, "video"))
     if bv[:2].lower() == 'av':
         bv = av2bv(bv)
     try:

@@ -36,6 +36,7 @@ from module import reClass
 from module.editor import Editor
 
 setting = Setting('setting.json')
+print(setting.set)
 if not setting['isDebugging']:
     sys.stdout = open(".\\log\\print.out", "a")
 N = "%Y-%m-%d %H:%m:%S(%p)"
@@ -600,7 +601,8 @@ class Ui_bilibili_get(QWidget):
 
     def d(self) -> None:  # download file
         def download_1(bv):
-            P = download_video(bv, self.header, path=path)
+            # P = download_video(bv, self.header, path=path)
+            P = download_video(bv, self.header)
             if P == 1:
                 print("视频下载失败")
                 logging.info(f"视频{bv}下载失败")

@@ -1,6 +1,7 @@
 {
     "Qss": "./bin/style/White.qss",
-    "cookie": "",
+    "cookie": "DedeUserID=450158456; DedeUserID__ckMd5=f1b89c51453a6646; SESSDATA=f0e6e535%2C1684337886%2C8f4e7*b2; bili_jct=5aa139c119fc648bb0ed1ab44db73840; sid=g4tvtm67; PVID=1; _uuid=9E586376-E1094-7629-517E-C5F7F71D155609707infoc; b_nut=1666400012; b_ut=5; buvid3=F735E69E-56E7-5CF4-8BA2-AB5E4EE4628F12401infoc; buvid4=38FB7568-42F2-C77F-7F1E-E12CA6BACB9A13912-022102208-+hGGnoawvNjMs6LvsU3MGvOzQWLxJuFYJxXLx1c+iYtz+9AtZd17tQ%3D%3D; buvid_fp=f9ebec2b1a6825bd6a7df0a16c71f341; buvid_fp_plain=undefined; fingerprint=f9ebec2b1a6825bd6a7df0a16c71f341; i-wanna-go-back=-1; GeeTestAjaxUser=82303d17ea0e4dc2dc53ab0ecae082c8; GeeTestUser=6b014fcfc24108e640af6ec96db1c4ef; innersign=0; b_lsid=2A1025391_1848B63D017; l=v; ",
+    "downloadAll": false,
     "isBBDown": false,
     "isCookieExists": false,
     "isDebugging": true,
@@ -12,5 +13,6 @@
     "playerEverytime": false,
     "startSetting": false,
     "thread": true,
-    "workplace": "./bin/style/"
+    "threadOne": true,
+    "workplace": "."
 }
