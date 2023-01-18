@@ -75,7 +75,7 @@ if __name__ == '__main__':
     # 注意文件路径: 调用时在main.py文件中, 所以./setting.json是指main.py的上一位中
     setting.change("cookie", main_demo.cookie)
     setting.saveEnd()
-    # subprocess.call("python main.py", shell=True)
+    # subprocess.call("python general.py", shell=True)
 '''————————————————
 版权声明：本文为CSDN博主「做我的code吧」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/yueguangMaNong/article/details/81146816'''

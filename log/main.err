@@ -1,0 +1,65 @@
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\bilibili-api-master\main.py", line 78, in <module>
+    style_sheet = QSSLoader.readQssFile(setting['Qss'])
+  File "C:\Users\lpy\Desktop\bilibili-api\bilibili-api-master\main.py", line 73, in readQssFile
+    with open(qss_file_name, 'r', encoding='UTF-8') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss'
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 898, in <module>
+    main()
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 893, in main
+    main1()
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 782, in main1
+    ui.setupUi(MainWindow)
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 394, in setupUi
+    self.settingForButthon.clicked.connect(self.stt)
+AttributeError: 'Ui_bilibili_get' object has no attribute 'settingForButthon'
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 898, in <module>
+    main()
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 893, in main
+    main1()
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 782, in main1
+    ui.setupUi(MainWindow)
+  File "C:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 394, in setupUi
+    self.settingForButthon.clicked.connect(self.stt)
+AttributeError: 'Ui_bilibili_get' object has no attribute 'settingForButthon'
+Traceback (most recent call last):
+  File "c:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 898, in <module>
+    main()
+  File "c:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 893, in main
+    main1()
+  File "c:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 782, in main1
+    ui.setupUi(MainWindow)
+  File "c:\Users\lpy\Desktop\bilibili-api\Ui_common.py", line 394, in setupUi
+    self.settingForButthon.clicked.connect(self.stt)
+AttributeError: 'Ui_bilibili_get' object has no attribute 'settingForButthon'
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\main.pyw", line 3, in <module>
+    __import__(s['whoToChoose'])
+ModuleNotFoundError: No module named 'general.py'; 'general' is not a package
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\main.pyw", line 3, in <module>
+    __import__(s['whoToChoose'])
+ModuleNotFoundError: No module named 'general.py'; 'general' is not a package
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\main.pyw", line 4, in <module>
+    __import__("general.py")
+ModuleNotFoundError: No module named 'general.py'; 'general' is not a package
+{[general.py-519] AND [(21236-Thread-2)]}: INFO-2023-01-10 11:04:15,309: “—ªÒ»°cookie
+{[general.py-902] AND [(19076-MainThread)]}: INFO-2023-01-10 11:12:09,319: START FUNCTION
+{[general.py-147] AND [(19076-MainThread)]}: INFO-2023-01-10 11:12:09,336: SETUP UI.
+{[general.py-902] AND [(21404-MainThread)]}: INFO-2023-01-10 11:12:20,051: START FUNCTION
+{[general.py-147] AND [(21404-MainThread)]}: INFO-2023-01-10 11:12:20,067: SETUP UI.
+{[general.py-903] AND [(5264-MainThread)]}: INFO-2023-01-10 11:13:21,728: START FUNCTION
+{[general.py-148] AND [(5264-MainThread)]}: INFO-2023-01-10 11:13:21,746: SETUP UI.
+{[general.py-903] AND [(16316-MainThread)]}: INFO-2023-01-10 11:13:39,740: START FUNCTION
+{[general.py-148] AND [(16316-MainThread)]}: INFO-2023-01-10 11:13:39,756: SETUP UI.
+{[general.py-903] AND [(19236-MainThread)]}: INFO-2023-01-10 13:02:24,616: START FUNCTION
+{[general.py-148] AND [(19236-MainThread)]}: INFO-2023-01-10 13:02:24,633: SETUP UI.
+Traceback (most recent call last):
+  File "C:\Users\lpy\Desktop\bilibili-api\general.py", line 78, in <module>
+    style_sheet = QSSLoader.readQssFile(setting['Qss'])
+  File "C:\Users\lpy\Desktop\bilibili-api\general.py", line 73, in readQssFile
+    with open(qss_file_name, 'r', encoding='UTF-8') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss'

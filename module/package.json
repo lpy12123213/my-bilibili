@@ -1,0 +1,8 @@
+{
+    "pythonFile": ["common.py", "general.py", "main.pyw", "setting.pyw", "module\\player.py", "module\\open1.py"],
+    "delete": [],
+    "deleteTree": [".\\forTest", ".\\forms", ".\\.vscode", ".\\.idea", ".\\__pycache__"],
+    "copyPathName": {"..\\bilibili-api": "..\\EXEFILE"},
+    "workpath": "",
+    "workpathAfterCopy": "..\\EXEFILE"
+}

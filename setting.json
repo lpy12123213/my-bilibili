@@ -1,6 +1,7 @@
 {
     "Qss": "C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss",
-    "cookie": "",
+    "VPN": 0,
+    "cookie": "DedeUserID=450158456; DedeUserID__ckMd5=f1b89c51453a6646; SESSDATA=f2de93fc%2C1689498220%2C50742%2A12; bili_jct=9c679fa163f7186f3f3cc481330fa69e; sid=pnjgqrnb; PVID=1; _uuid=9E586376-E1094-7629-517E-C5F7F71D155609707infoc; b_nut=1666400012; b_ut=5; buvid3=F735E69E-56E7-5CF4-8BA2-AB5E4EE4628F12401infoc; buvid4=38FB7568-42F2-C77F-7F1E-E12CA6BACB9A13912-022102208-+hGGnoawvNjMs6LvsU3MGvOzQWLxJuFYJxXLx1c+iYtz+9AtZd17tQ%3D%3D; buvid_fp=f9ebec2b1a6825bd6a7df0a16c71f341; buvid_fp_plain=undefined; fingerprint=f9ebec2b1a6825bd6a7df0a16c71f341; i-wanna-go-back=-1; GeeTestAjaxUser=82303d17ea0e4dc2dc53ab0ecae082c8; GeeTestUser=6b014fcfc24108e640af6ec96db1c4ef; innersign=0; b_lsid=E2A6A3DA_185BEF83B45; l=v; ",
     "downloadAll": true,
     "isBBDown": false,
     "isCookieExists": false,
@@ -9,9 +10,15 @@
     "isLogin": true,
     "isNeedBackground": false,
     "isNeedLogin": true,
+    "isPY": true,
     "mostSearch": 5,
     "path": ".",
     "playerEverytime": false,
+    "proxy": {
+        "http": "",
+        "https": ""
+    },
     "startSetting": false,
-    "thread": false
+    "thread": true,
+    "whoToChoose": "general"
 }

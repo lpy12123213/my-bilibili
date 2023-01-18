@@ -1,19 +1,38 @@
 import os
 import sys
 from threading import Thread
+
+import qdarkstyle
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from module.func import Setting
 from time import sleep
 
 s = Setting('setting.json')
-s.init(['Qss', 'cookie', 'isBBDown', 'isCookieExists', 'isFirst', 'isLogin', 'isNeedBackground', 'isNeedLogin',
-        'playerEverytime', 'startSetting',
-        'thread', 'mostSearch'],
-       ['C:/Users/lpy/Desktop/bilibili-api/bin/style/style.qss', '', False, False, False, True, False, True, False,
-        False, False, 5])
+
+s.init_({'Qss': './bin/style/style.qss', 'cookie': {}, 'downloadAll': True,
+         'isBBDown': False, 'isCookieExists': False, 'isDebugging': False, 'isFirst': False, 'isLogin': True,
+         'isNeedBackground': False, 'isNeedLogin': True, 'mostSearch': 5, 'path': '.', 'playerEverytime': False,
+         'proxy': {'http': '', 'https': ''}, 'startSetting': False, 'thread': True, "whoToChoose": "general",
+         "isPY": True})
 s['cookie'] = ''
 s.saveEnd()
+
+
+class QSSLoader:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def readQssFile(qss_file_name):
+        with open(qss_file_name, 'r', encoding='UTF-8') as file:
+            return file.read()
+
+
+if s['Qss'].lower() != 'other':
+    style_sheet = QSSLoader.readQssFile(s['Qss'])
+else:
+    style_sheet = (qdarkstyle.load_stylesheet_pyqt5())
 
 
 class Ui_Setting(object):
@@ -22,455 +41,7 @@ class Ui_Setting(object):
     def setupUi(self, Setting):
         Setting.setObjectName("Setting")
         Setting.resize(663, 404)
-        Setting.setStyleSheet("""/*
-Material Dark Style Sheet for QT Applications
-Author: Jaime A. Quiroga P.
-Inspired on https://github.com/jxfwinter/qt-material-stylesheet
-Company: GTRONICK
-Last updated: 04/12/2018, 15:00.
-Available at: https://github.com/GTRONICK/QSS/blob/master/MaterialDark.qss
-*/
-QMainWindow {
-    background-color: #1e1d23;
-}
-
-QDialog {
-    background-color: #1e1d23;
-}
-
-QColorDialog {
-    background-color: #1e1d23;
-}
-
-QTextEdit {
-    background-color: #1e1d23;
-    color: #a9b7c6;
-}
-
-QPlainTextEdit {
-    selection-background-color: #007b50;
-    background-color: #1e1d23;
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-    border-width: 1px;
-    color: #a9b7c6;
-}
-
-QPushButton {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-    border-width: 1px;
-    border-style: solid;
-    color: #a9b7c6;
-    padding: 2px;
-    background-color: #1e1d23;
-}
-
-QPushButton::default {
-    border-style: inset;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #04b97f;
-    border-width: 1px;
-    color: #a9b7c6;
-    padding: 2px;
-    background-color: #1e1d23;
-}
-
-QToolButton {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #04b97f;
-    border-bottom-width: 1px;
-    border-style: solid;
-    color: #a9b7c6;
-    padding: 2px;
-    background-color: #1e1d23;
-}
-
-QToolButton:hover {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #37efba;
-    border-bottom-width: 2px;
-    border-style: solid;
-    color: #FFFFFF;
-    padding-bottom: 1px;
-    background-color: #1e1d23;
-}
-
-QPushButton:hover {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #37efba;
-    border-bottom-width: 1px;
-    border-style: solid;
-    color: #FFFFFF;
-    padding-bottom: 2px;
-    background-color: #1e1d23;
-}
-
-QPushButton:pressed {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #37efba;
-    border-bottom-width: 2px;
-    border-style: solid;
-    color: #37efba;
-    padding-bottom: 1px;
-    background-color: #1e1d23;
-}
-
-QPushButton:disabled {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #808086;
-    border-bottom-width: 2px;
-    border-style: solid;
-    color: #808086;
-    padding-bottom: 1px;
-    background-color: #1e1d23;
-}
-
-QLineEdit {
-    border-width: 1px;
-    border-radius: 4px;
-    border-color: rgb(58, 58, 58);
-    border-style: inset;
-    padding: 0 8px;
-    color: #a9b7c6;
-    background: #1e1d23;
-    selection-background-color: #007b50;
-    selection-color: #FFFFFF;
-}
-
-QLabel {
-    color: #a9b7c6;
-}
-
-QLCDNumber {
-    color: #37e6b4;
-}
-
-QProgressBar {
-    text-align: center;
-    color: rgb(240, 240, 240);
-    border-width: 1px;
-    border-radius: 10px;
-    border-color: rgb(58, 58, 58);
-    border-style: inset;
-    background-color: #1e1d23;
-}
-
-QProgressBar::chunk {
-    background-color: #04b97f;
-    border-radius: 5px;
-}
-
-QMenuBar {
-    background-color: #1e1d23;
-}
-
-QMenuBar::item {
-    color: #a9b7c6;
-    spacing: 3px;
-    padding: 1px 4px;
-    background: #1e1d23;
-}
-
-QMenuBar::item:selected {
-    background: #1e1d23;
-    color: #FFFFFF;
-}
-
-QMenu::item:selected {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: #04b97f;
-    border-bottom-color: transparent;
-    border-left-width: 2px;
-    color: #FFFFFF;
-    padding-left: 15px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-right: 7px;
-    background-color: #1e1d23;
-}
-
-QMenu::item {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-    border-bottom-width: 1px;
-    border-style: solid;
-    color: #a9b7c6;
-    padding-left: 17px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-right: 7px;
-    background-color: #1e1d23;
-}
-
-QMenu {
-    background-color: #1e1d23;
-}
-
-QTabWidget {
-    color: rgb(0, 0, 0);
-    background-color: #1e1d23;
-}
-
-QTabWidget::pane {
-    border-color: rgb(77, 77, 77);
-    background-color: #1e1d23;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 6px;
-}
-
-QTabBar::tab {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-    border-bottom-width: 1px;
-    border-style: solid;
-    color: #808086;
-    padding: 3px;
-    margin-left: 3px;
-    background-color: #1e1d23;
-}
-
-QTabBar::tab:selected,
-QTabBar::tab:last:selected,
-QTabBar::tab:hover {
-    border-style: solid;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: #04b97f;
-    border-bottom-width: 2px;
-    border-style: solid;
-    color: #FFFFFF;
-    padding-left: 3px;
-    padding-bottom: 2px;
-    margin-left: 3px;
-    background-color: #1e1d23;
-}
-
-QCheckBox {
-    color: #a9b7c6;
-    padding: 2px;
-}
-
-QCheckBox:disabled {
-    color: #808086;
-    padding: 2px;
-}
-
-QCheckBox:hover {
-    border-radius: 4px;
-    border-style: solid;
-    padding-left: 1px;
-    padding-right: 1px;
-    padding-bottom: 1px;
-    padding-top: 1px;
-    border-width: 1px;
-    border-color: rgb(87, 97, 106);
-    background-color: #1e1d23;
-}
-
-QCheckBox::indicator:checked {
-
-    height: 10px;
-    width: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #04b97f;
-    color: #a9b7c6;
-    background-color: #04b97f;
-}
-
-QCheckBox::indicator:unchecked {
-
-    height: 10px;
-    width: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #04b97f;
-    color: #a9b7c6;
-    background-color: transparent;
-}
-
-QRadioButton {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-    padding: 1px;
-}
-
-QRadioButton::indicator:checked {
-    height: 10px;
-    width: 10px;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: #04b97f;
-    color: #a9b7c6;
-    background-color: #04b97f;
-}
-
-QRadioButton::indicator: !checked {
-    height: 10px;
-    width: 10px;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: #04b97f;
-    color: #a9b7c6;
-    background-color: transparent;
-}
-
-QStatusBar {
-    color: #027f7f;
-}
-
-QSpinBox {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QDoubleSpinBox {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QTimeEdit {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QDateTimeEdit {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QDateEdit {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QComboBox {
-    color: #a9b7c6;
-    background: #1e1d23;
-}
-
-QComboBox:editable {
-    background: #1e1d23;
-    color: #a9b7c6;
-    selection-background-color: #1e1d23;
-}
-
-QComboBox QAbstractItemView {
-    color: #a9b7c6;
-    background: #1e1d23;
-    selection-color: #FFFFFF;
-    selection-background-color: #1e1d23;
-}
-
-QComboBox: !editable:on,
-QComboBox::drop-down:editable:on {
-    color: #a9b7c6;
-    background: #1e1d23;
-}
-
-QFontComboBox {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QToolBox {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QToolBox::tab {
-    color: #a9b7c6;
-    background-color: #1e1d23;
-}
-
-QToolBox::tab:selected {
-    color: #FFFFFF;
-    background-color: #1e1d23;
-}
-
-QScrollArea {
-    color: #FFFFFF;
-    background-color: #1e1d23;
-}
-
-QSlider::groove:horizontal {
-    height: 5px;
-    background: #04b97f;
-}
-
-QSlider::groove:vertical {
-    width: 5px;
-    background: #04b97f;
-}
-
-QSlider::handle:horizontal {
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
-    border: 1px solid #5c5c5c;
-    width: 14px;
-    margin: -5px 0;
-    border-radius: 7px;
-}
-
-QSlider::handle:vertical {
-    background: qlineargradient(x1:1, y1:1, x2:0, y2:0, stop:0 #b4b4b4, stop:1 #8f8f8f);
-    border: 1px solid #5c5c5c;
-    height: 14px;
-    margin: 0 -5px;
-    border-radius: 7px;
-}
-
-QSlider::add-page:horizontal {
-    background: white;
-}
-
-QSlider::add-page:vertical {
-    background: white;
-}
-
-QSlider::sub-page:horizontal {
-    background: #04b97f;
-}
-
-QSlider::sub-page:vertical {
-    background: #04b97f;
-}
-/* 感谢提供此模板的大佬 */""")
+        Setting.setStyleSheet(style_sheet)
         self.pushButton = QtWidgets.QPushButton(Setting)
         self.pushButton.setGeometry(QtCore.QRect(560, 360, 93, 29))
         self.pushButton.setStyleSheet("border-radius\n"
@@ -602,9 +173,10 @@ QSlider::sub-page:vertical {
     def openFile(self):
         # 如果添加一个内容则需要加两个分号
         fname, ftype = QFileDialog.getOpenFileName(
-            None, "Open File", "./bin/style/", "All Files(*);;Wav(*.wav);;Txt (*.txt)")
+            None, "Open File", "./bin/style/", "All Files(*)")
         if fname:
             self.s['Qss'] = fname
+            print(1)
 
     def commit(self):
         try:
@@ -633,12 +205,13 @@ QSlider::sub-page:vertical {
         self.isLogin.setChecked(s['isLogin'])
         self.isNeedLogin.setChecked(s['isNeedLogin'])
         self.playerEverytime.setChecked(s['playerEverytime'])
-        self.threadOne.setChecked(s['threadOne'])
+        # self.threadOne.setChecked(s['threadOne'])
         self.downloadAll.setChecked(s['downloadAll'])
         self.isBBDown.setChecked(s['isBBDown'])
         self.start.setChecked(s['startSetting'])
-        self.cookie.setText(s["cookie"] if s["cookie"] != {} else "")
+        self.cookie.setText(s["cookie"] if s["cookie"] != {} or s["cookie"] != "" else "")
         self.mostSearch.setText(str(s["mostSearch"]))
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
