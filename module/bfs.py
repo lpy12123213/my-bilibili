@@ -1,10 +1,10 @@
 # 用bfs的方式获取搜索词汇
 import json
+import threading as t
 import time
+from queue import SimpleQueue
 
 import requests as r
-from queue import SimpleQueue
-import threading as t
 
 
 def getproxy(n=None):
@@ -12,10 +12,7 @@ def getproxy(n=None):
     text = r.get(_url).text
     if n is not None:
         text = n
-    return {
-        "http": f"http://{text}",
-        "https": f"https://{text}"
-    }
+    return {"http": f"http://{text}", "https": f"https://{text}"}
 
 
 def get_advice(it):
@@ -28,8 +25,11 @@ def get_advice(it):
         #     "https": "https://127.0.0.1:10809"
         # },
         # proxies=getproxy("222.179.155.90:9091"),
-        headers={"user-agant": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-                               "Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46 "},
+        headers={
+            "user-agant":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46 "
+        },
     )
     print(b.json())
     b.encoding = "utf-8"
@@ -52,7 +52,7 @@ def BFS(start, deep=4):
             m.append(i)
             m = list(set(m))
             with open("词典.txt", "a", encoding="utf-8") as f:
-                f.write(', '.join(m))
+                f.write(", ".join(m))
             time.sleep(0.1)
         nowDeep += 1
     return list(set(m))
