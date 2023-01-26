@@ -284,7 +284,7 @@ def bv2av(x: str):
 
 
 def av2bv(x):
-    if type(x) == type(" "):
+    if type(x) is type(" "):
         x = int(x[2:])
     x = (x ^ xor) + add
     r = list("BV1  4 1 7  ")
@@ -515,7 +515,7 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
     # except:
     #     a = download(json, bv, page)
     try:
-        if type(json1) == type([1, 2, 3]):
+        if type(json1) is type([1, 2, 3]):
             # url = json1[0]['data']['dash']['video'][0]['baseUrl']
             # for i in json1:
             # 远程主机未响应
