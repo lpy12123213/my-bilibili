@@ -1,27 +1,31 @@
 """
 # This is a module for bilibili video download.
 """
-import json
-# import time
-import sys
-
-import requests
-import subprocess
-import os
-import re
-# import copy
-import pprint
-from module.ua import ua
-# from module import ua
-from random import choice
 # from Crypto.Cipher import AES
 import base64
 import inspect
+import json
+import os
+
+# import copy
+import pprint
+import re
+import subprocess
+
+# import time
+import sys
+
+# from module import ua
+from random import choice
+
+import requests
+
+from module.ua import ua
 
 sysLog = sys.stdout
 
 
-def printf(*args, sep=' ', end='\n'):
+def printf(*args, sep=" ", end="\n"):
     """
     Like the function `print()`.
     I write it to do this:
@@ -40,7 +44,7 @@ def printf(*args, sep=' ', end='\n'):
     MY PRINT FUNCTION
     EOF;
     """
-    ret = ''
+    ret = ""
     for i in args[0:-1]:
         ret += str(i)
         ret += sep
@@ -50,6 +54,7 @@ def printf(*args, sep=' ', end='\n'):
 
 
 class SetErr(Exception):
+
     def __init__(self, message):
         self.message = message
 
@@ -58,7 +63,12 @@ class Setting(object):
     set = {}
 
     # @overload
-    def __init__(self, filename, name=None, value=None, mode='a', isFormat=True):
+    def __init__(self,
+                 filename,
+                 name=None,
+                 value=None,
+                 mode="a",
+                 isFormat=True):
         """
         setting `self.filename`, `self.text`, `self.mode`
         and setting self.setting
@@ -69,12 +79,12 @@ class Setting(object):
         self.mode = mode
         self.isFormat = isFormat
         if not os.path.exists(filename):
-            open(filename, 'w').close()
-        self.io_r = open(filename, 'r')  # io_r指read的io
+            open(filename, "w").close()
+        self.io_r = open(filename, "r")  # io_r指read的io
         self.text = self.io_r.read()
         self.io_r.close()
         self.io = open(filename, self.mode)
-        if self.text == '':
+        if self.text == "":
             return
         self.set = json.loads(self.text)
         if name is not None:
@@ -120,7 +130,7 @@ class Setting(object):
             string: str = json.dumps(self.set, sort_keys=True, indent=4)
         else:
             string: str = json.dumps(self.set)
-        with open(self.filename, 'w') as f:
+        with open(self.filename, "w") as f:
             f.write(string)
         self.io = open(self.filename, self.mode)
         with open(self.filename) as f:
@@ -221,11 +231,11 @@ class Setting(object):
         return ret
 
     def refresh(self):
-        self.io_r = open(self.filename, 'r')  # io_r指read的io
+        self.io_r = open(self.filename, "r")  # io_r指read的io
         self.text = self.io_r.read()
         self.io_r.close()
         self.io = open(self.filename, self.mode)
-        if self.text == '':
+        if self.text == "":
             return
         self.set = json.loads(self.text)
 
@@ -255,7 +265,7 @@ class Setting(object):
 
 if 1:
     # The av 2 bv function is from https://github.com/SocialSisterYi/bilibili-API-collect
-    table = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'  # 码表
+    table = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF"  # 码表
     tr = {}  # 反查码表
     # 初始化反查码表
     for i in range(58):
@@ -268,18 +278,18 @@ if 1:
 def bv2av(x: str):
     r = 0
     for i in range(6):
-        r += tr[x[s[i]]] * 58 ** i
+        r += tr[x[s[i]]] * 58**i
     return (r - add) ^ xor
 
 
 def av2bv(x):
-    if type(x) == type(' '):
+    if type(x) == type(" "):
         x = int(x[2:])
     x = (x ^ xor) + add
-    r = list('BV1  4 1 7  ')
+    r = list("BV1  4 1 7  ")
     for i in range(6):
-        r[s[i]] = table[x // 58 ** i % 58]
-    return ''.join(r)
+        r[s[i]] = table[x // 58**i % 58]
+    return "".join(r)
 
 
 if 1:
@@ -287,56 +297,56 @@ if 1:
     # 变量提前定义
     path = os.getcwd()
     os.chdir(path)
-    header = {
-        'user-agent': choice(ua)
-    }
+    header = {"user-agent": choice(ua)}
     # 变量提前定义
     # header['cookie'] = get_cookie()\
 
     qxd = {
-        '240P': 6,
-        '360P': 16,
-        '480P': 32,
-        '720P': 64,
-        '720P60': 74,
-        '1080P': 80,
-        '1080P+': 112,
-        '1080P60': 116,
-        '4K': 120
+        "240P": 6,
+        "360P": 16,
+        "480P": 32,
+        "720P": 64,
+        "720P60": 74,
+        "1080P": 80,
+        "1080P+": 112,
+        "1080P60": 116,
+        "4K": 120,
     }
     setting = {}
-    setting['qxd'] = qxd["1080P"]
+    setting["qxd"] = qxd["1080P"]
     sess = requests.session()
 
 
 class DownloadErr(Exception):
+
     def __init__(self, message):
         self.message = message
 
 
 def get_bv_from_url(text):
-    pattern = re.compile(r'https://www.bilibili.com/video/(.+)?\?.*')
+    pattern = re.compile(r"https://www.bilibili.com/video/(.+)?\?.*")
     bv = re.findall(pattern, text)
     printf(bv)
     return bv[0]
 
 
 # get_bv_from_url('https://www.bilibili.com/video/BV1K5411S7UM?spm_id_from=333.851.b_7265636f6d6d656e64.6')
-
-'''
+"""
 检测登录状态
 https://api.bilibili.com/x/web-interface/nav
-'''
+"""
 
 
 def get_user_info(headers):
+
     class LoginError(Exception):
+
         def __init__(self, message):
             self.message = message
 
-    url = 'https://api.bilibili.com/x/web-interface/nav'
+    url = "https://api.bilibili.com/x/web-interface/nav"
     response = requests.get(url, headers=headers, timeout=10)
-    response.encoding = 'utf-8'
+    response.encoding = "utf-8"
     response.raise_for_status()
     resp = response.json()
     # if not resp['data']['isLogin']:
@@ -365,56 +375,62 @@ def get_user_info(headers):
 def get_cid(bv, headers):
     __url = "https://api.bilibili.com/x/web-interface/view"
     data = {
-        'bvid': bv,
+        "bvid": bv,
     }
     resp = requests.get(__url, headers=headers, params=data, timeout=10)
-    resp.encoding = 'utf-8'
+    resp.encoding = "utf-8"
     resp.raise_for_status()
     json_response = resp.json()
     return_text = []
     # print(json_response)
     try:
-        for i in json_response['data']['pages']:
-            return_text.append(i['cid'])
+        for i in json_response["data"]["pages"]:
+            return_text.append(i["cid"])
     except:
-        return_text.append(json_response['data']['cid'])
+        return_text.append(json_response["data"]["cid"])
     return return_text
 
 
 def get_video_info(bv, headers):
-    if bv[:2].lower() == 'av':
+    if bv[:2].lower() == "av":
         bv = av2bv(bv)
 
     cidlist = get_cid(bv, headers)
     if len(cidlist) == 1:
         cid = cidlist[0]
-        _url = 'http://api.bilibili.com/x/player/playurl'
+        _url = "http://api.bilibili.com/x/player/playurl"
         _params = {
-            'bvid': bv,
-            'cid': cid,
-            'fnval': '16',
+            "bvid": bv,
+            "cid": cid,
+            "fnval": "16",
         }
         session = sess
         try:
-            response = session.get(_url, params=_params, headers=headers, timeout=10)
+            response = session.get(_url,
+                                   params=_params,
+                                   headers=headers,
+                                   timeout=10)
         except requests.exceptions.ConnectionError as ce:
             raise DownloadErr(f"错误：{ce}")
-        response.encoding = 'utf-8'
+        response.encoding = "utf-8"
         response.raise_for_status()
         resp = response.json()
         return resp
     cid1 = cidlist
     retlist = []
     for cid in cid1:
-        _url = 'http://api.bilibili.com/x/player/playurl'
+        _url = "http://api.bilibili.com/x/player/playurl"
         _params = {
-            'bvid': bv,
-            'cid': cid,
-            'fnval': '16',
+            "bvid": bv,
+            "cid": cid,
+            "fnval": "16",
         }
         session = sess
-        response = session.get(_url, params=_params, headers=headers, timeout=10)
-        response.encoding = 'utf-8'
+        response = session.get(_url,
+                               params=_params,
+                               headers=headers,
+                               timeout=10)
+        response.encoding = "utf-8"
         response.raise_for_status()
         resp = response.json()
         retlist.append(resp)
@@ -422,25 +438,28 @@ def get_video_info(bv, headers):
 
 
 def get_video_title_or_desc(bv, headers):
-    if bv[:2].lower() == 'av':
+    if bv[:2].lower() == "av":
         bv = av2bv(bv)
-    url = 'https://api.bilibili.com/x/web-interface/view'
+    url = "https://api.bilibili.com/x/web-interface/view"
     data = {
-        'bvid': bv,
+        "bvid": bv,
     }
-    resp = requests.get(url, headers=headers, params=data, timeout=10 )
-    resp.encoding = 'utf-8'
+    resp = requests.get(url, headers=headers, params=data, timeout=10)
+    resp.encoding = "utf-8"
     resp.raise_for_status()
     json_response = resp.json()
-    return {'title': json_response['data']['title'], 'desc': json_response['data']['desc']}
+    return {
+        "title": json_response["data"]["title"],
+        "desc": json_response["data"]["desc"],
+    }
 
 
 def download(json, bv, page=1, name=None) -> dict:
-    '''
+    """
     ## download a video from BiliBili
     use `aria2c` to download
-    '''
-    if bv[:2].lower() == 'av':
+    """
+    if bv[:2].lower() == "av":
         bv = av2bv(bv)
     if name is None:
         name = bv
@@ -448,27 +467,27 @@ def download(json, bv, page=1, name=None) -> dict:
     name.replace("/", "")
     ds = f"""{path}\\bin\\aria2c -s 32 --dir=.\\temp\\ -D -o "{name}.m4s" "{json}" --referer=https://www.bilibili.com/video/{bv}?p={page}"""
     # subprocess.call(ds)
-    return {'filename': name + '.m4s', 'name': name, 'cmd': ds}
+    return {"filename": name + ".m4s", "name": name, "cmd": ds}
 
 
 def download_music(json, bv, page=1, name=None) -> dict:
-    '''
+    """
     ## download music from bilibili
     use `aria2c` to download
-    '''
-    if bv[:2].lower() == 'av':
+    """
+    if bv[:2].lower() == "av":
         bv = av2bv(bv)
     if name is None:
         name = bv
     name.replace("\\", "")
     name.replace("/", "")
-    ds = fr"""{path}\bin\aria2c -s 32 --dir=.\temp\ -D -o "{name}.mp3" "{json}" --referer=https://www.bilibili.com/video/{bv}?p={page}"""
+    ds = rf"""{path}\bin\aria2c -s 32 --dir=.\temp\ -D -o "{name}.mp3" "{json}" --referer=https://www.bilibili.com/video/{bv}?p={page}"""
     # subprocess.call(ds)
-    return {'filename': name + '.mp3', 'name': name, 'cmd': ds}
+    return {"filename": name + ".mp3", "name": name, "cmd": ds}
 
 
 def clean(filename: str) -> None:
-    subprocess.call(f"del \"{path}\\temp\\{filename}\"", shell=True)
+    subprocess.call(f'del "{path}\\temp\\{filename}"', shell=True)
 
 
 def makedirs(dir):
@@ -478,7 +497,7 @@ def makedirs(dir):
 
 def download_video(bv, headers, page=1, isLog=True, path="."):
     makedirs(os.path.join(path, "video"))
-    if bv[:2].lower() == 'av':
+    if bv[:2].lower() == "av":
         bv = av2bv(bv)
     try:
         if isLog:
@@ -486,7 +505,7 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
         json1 = get_video_info(bv, headers)
     except KeyError:
         return 1
-    a = ''
+    a = ""
     list1 = []
     # try:
     #     for i in range(1, page):
@@ -499,43 +518,49 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
             # for i in json1:
             # 远程主机未响应
             # 咋加一个批量化这么难呢？
-            url = json1[0]['data']['dash']['video'][0]['baseUrl']
-            title = get_video_title_or_desc(bv, headers=headers)['title']
+            url = json1[0]["data"]["dash"]["video"][0]["baseUrl"]
+            title = get_video_title_or_desc(bv, headers=headers)["title"]
             title = title.replace("/", "").replace("\\", "")
             if isLog:
                 printf("下载视频部分")
             a = download(url, bv, page, name=title)
-            subprocess.call(a['cmd'])
-            url = json1[0]['data']['dash']['audio'][0]['baseUrl']
+            subprocess.call(a["cmd"])
+            url = json1[0]["data"]["dash"]["audio"][0]["baseUrl"]
             if isLog:
                 printf("下载音频部分")
-            b = download_music(
-                url, bv, page, name=title)
-            subprocess.call(b['cmd'])
+            b = download_music(url, bv, page, name=title)
+            subprocess.call(b["cmd"])
         else:
-            url = json1['data']['dash']['video'][0]['baseUrl']
-            title = get_video_title_or_desc(bv, headers=headers)['title']
+            url = json1["data"]["dash"]["video"][0]["baseUrl"]
+            title = get_video_title_or_desc(bv, headers=headers)["title"]
             if isLog:
                 printf("下载视频部分")
             a = download(url, bv, page, name=title)
             subprocess.call(a["cmd"])
             b = None
             try:
-                url = json1['data']['dash']['audio'][0]['baseUrl']
+                url = json1["data"]["dash"]["audio"][0]["baseUrl"]
                 if isLog:
                     printf("下载音频部分")
                 b = download_music(url, bv, page, name=title)
-                subprocess.call(b['cmd'])
+                subprocess.call(b["cmd"])
             except KeyError:
                 process = subprocess.call(
                     f"bin\\ffmpeg -y -i \"temp\\{a['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\"",
-                    shell=True)
-                clean(a['filename'])
-                return {"video": a, "music": b,
-                        "cmd": f"bin\\ffmpeg -y -i \"temp\\{a['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\""}
+                    shell=True,
+                )
+                clean(a["filename"])
+                return {
+                    "video":
+                    a,
+                    "music":
+                    b,
+                    "cmd":
+                    f"bin\\ffmpeg -y -i \"temp\\{a['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\"",
+                }
                 # 删除临时文件
     except:
-        with open('../test.json', 'w') as f:
+        with open("../test.json", "w") as f:
             json.dump(json1, f)
         return 1
     # 调用ffmpeg
@@ -544,12 +569,19 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
     # 以上语句来自https://cloud.tencent.com/developer/article/1877108
     process = subprocess.call(
         f"bin\\ffmpeg -y -i \"temp\\{a['filename']}\" -i \"temp\\{b['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\"",
-        shell=True)
+        shell=True,
+    )
     # 删除临时文件
-    clean(a['filename'])
-    clean(b['filename'])
-    return {"video": a, "music": b,
-            "cmd": f"bin\\ffmpeg -y -i \"temp\\{a['filename']}\" -i \"temp\\{b['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\""}
+    clean(a["filename"])
+    clean(b["filename"])
+    return {
+        "video":
+        a,
+        "music":
+        b,
+        "cmd":
+        f"bin\\ffmpeg -y -i \"temp\\{a['filename']}\" -i \"temp\\{b['filename']}\" -c:v copy -c:a aac -strict experimental \"{path}\\video\\{a['name']}.mp4\"",
+    }
 
 
 def downloadWithJson(json, header, page=None):
@@ -564,27 +596,24 @@ def downloadWithJson(json, header, page=None):
 
 
 def kill() -> None:
-    '''
+    """
     # taskill杀进程
-    '''
+    """
     subprocess.call(f"taskkill /F /PID aria2c.exe")
     subprocess.call(f"taskkill /F /PID ffmpeg.exe")
 
 
 def search(keywords, headers, pages=0):
     ret = []
-    s = Setting('../setting.json', mode='r')
+    s = Setting("../setting.json", mode="r")
     if pages == 0:
-        for i in range(1, s['mostSearch'] + 1):
-            data = {
-                'keyword': keywords,
-                "page": i
-            }
+        for i in range(1, s["mostSearch"] + 1):
+            data = {"keyword": keywords, "page": i}
             res = requests.get(
                 "http://api.bilibili.com/x/web-interface/search/all/v2",
                 headers=headers,
                 params=data,
-                timeout=10
+                timeout=10,
             )
             try:
                 res.raise_for_status()
@@ -592,25 +621,22 @@ def search(keywords, headers, pages=0):
                 return ret
             js = res.json()
             try:
-                data = js['data']['result'][10]['data']
+                data = js["data"]["result"][10]["data"]
             except:
                 return 1
             for i in range(len(data)):
                 temp = {}
-                temp['title'] = data[i]['title']
-                temp['bvid'] = data[i]['bvid']
-                temp['author'] = data[i]['author']
+                temp["title"] = data[i]["title"]
+                temp["bvid"] = data[i]["bvid"]
+                temp["author"] = data[i]["author"]
                 ret.append(temp)
         return ret
-    data = {
-        'keyword': keywords,
-        "page": pages
-    }
+    data = {"keyword": keywords, "page": pages}
     res = requests.get(
         "http://api.bilibili.com/x/web-interface/search/all/v2",
         headers=headers,
         params=data,
-        timeout=10
+        timeout=10,
     )
     try:
         res.raise_for_status()
@@ -618,33 +644,31 @@ def search(keywords, headers, pages=0):
         return ret
     js = res.json()
     try:
-        data = js['data']['result'][10]['data']
+        data = js["data"]["result"][10]["data"]
     except:
         return 1
     for i in range(len(data)):
         temp = {}
-        temp['title'] = data[i]['title']
-        temp['bvid'] = data[i]['bvid']
-        temp['author'] = data[i]['author']
+        temp["title"] = data[i]["title"]
+        temp["bvid"] = data[i]["bvid"]
+        temp["author"] = data[i]["author"]
         ret.append(temp)
     return ret
 
 
 def getSearchAdvice(key):
     _url = "http://s.search.bilibili.com/main/suggest"
-    data = {
-        "term": key
-    }
+    data = {"term": key}
     resp = requests.get(_url, params=data, timeout=10)
-    resp.encoding = 'utf-8'
+    resp.encoding = "utf-8"
     return resp.json()
 
 
 def get_count(id, ua):
     headers = ua
-    url = 'https://api.bilibili.com/x/space/arc/search'
-    resp = requests.get(url, headers=headers, params={'mid': id}, timeout=10)
-    count = resp.json()['data']['page']['count']
+    url = "https://api.bilibili.com/x/space/arc/search"
+    resp = requests.get(url, headers=headers, params={"mid": id}, timeout=10)
+    count = resp.json()["data"]["page"]["count"]
     resp.close()
     return count
 
@@ -654,111 +678,109 @@ def getUsrPage(id, ua):
 
 
 def get_usr_video(id, ua, pages=None):
-    '''
+    """
     # 获取用户视频
     调用接口：https://api.bilibili.com/x/space/arc/search
     传入参数：
     mid: 用户ID，纯数字
     user-agent: UA(好像不加也行，但还是加一下)
-    '''
+    """
     headers = ua
-    url = 'https://api.bilibili.com/x/space/arc/search'
+    url = "https://api.bilibili.com/x/space/arc/search"
 
     try:
         if pages is None:
+
             def get_count(id, ua):
                 headers = ua
-                url = 'https://api.bilibili.com/x/space/arc/search'
-                resp = requests.get(url, headers=headers, params={'mid': id}, timeout=10)
-                count = resp.json()['data']['page']['count']
+                url = "https://api.bilibili.com/x/space/arc/search"
+                resp = requests.get(url,
+                                    headers=headers,
+                                    params={"mid": id},
+                                    timeout=10)
+                count = resp.json()["data"]["page"]["count"]
                 resp.close()
                 return count
 
             count = get_count(id, ua)
             if count <= 50:
-                data = {
-                    'mid': id,
-                    'ps': 50
-                }
-                resp = requests.get(url, headers=headers, params=data, timeout=10)
-                json1 = resp.json()['data']['list']['vlist']
-                ret = [{'bvid': i['bvid'],
-                        'title': i['title'],
-                        'author': i['author'],
-                        'desc': i['description']}
-                    for i in json1
-                    ]
+                data = {"mid": id, "ps": 50}
+                resp = requests.get(url,
+                                    headers=headers,
+                                    params=data,
+                                    timeout=10)
+                json1 = resp.json()["data"]["list"]["vlist"]
+                ret = [{
+                    "bvid": i["bvid"],
+                    "title": i["title"],
+                    "author": i["author"],
+                    "desc": i["description"],
+                } for i in json1]
                 return ret
             ret = []
             p = int(count / 50) + 1
             for i in range(p):
-                data = {
-                    'mid': id,
-                    'ps': 50,
-                    'pn': i + 1
-                }
-                resp = requests.get(url, headers=headers, params=data,timeout=10)
+                data = {"mid": id, "ps": 50, "pn": i + 1}
+                resp = requests.get(url,
+                                    headers=headers,
+                                    params=data,
+                                    timeout=10)
                 resp.encoding = "utf-8"
-                json1 = resp.json()['data']['list']['vlist']
-                ret += [{'bvid': i['bvid'],
-                        'title': i['title'],
-                        'author': i['author'],
-                        'desc': i['description']}
-                        for i in json1
-                        ]
+                json1 = resp.json()["data"]["list"]["vlist"]
+                ret += [{
+                    "bvid": i["bvid"],
+                    "title": i["title"],
+                    "author": i["author"],
+                    "desc": i["description"],
+                } for i in json1]
             return ret
         else:
             ret = []
-            data = {
-                'mid': id,
-                'ps': 50,
-                'pn': pages + 1
-            }
+            data = {"mid": id, "ps": 50, "pn": pages + 1}
             resp = requests.get(url, headers=headers, params=data, timeout=10)
             resp.encoding = "utf-8"
-            json1 = resp.json()['data']['list']['vlist']
-            ret += [{'bvid': i['bvid'],
-                    'title': i['title'],
-                    'author': i['author'],
-                    'desc': i['description']}
-                    for i in json1
-                    ]
+            json1 = resp.json()["data"]["list"]["vlist"]
+            ret += [{
+                "bvid": i["bvid"],
+                "title": i["title"],
+                "author": i["author"],
+                "desc": i["description"],
+            } for i in json1]
             return ret
     except:
         sys.stderr.write("ERR: 哔哩哔哩发现力(悲)")
-        
 
 
 def get_usr_pic(id):
-    url = 'http://api.bilibili.com/x/space/acc/info'
-    data = {
-        'mid': id
-    }
+    url = "http://api.bilibili.com/x/space/acc/info"
+    data = {"mid": id}
     headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                      'Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.47 '
+        "user-agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/104.0.5112.81 Safari/537.36 Edg/104.0.1293.47 "
     }
     resp = requests.get(url, headers=headers, params=data, timeout=10)
-    json1 = resp.json()['data']
-    url = json1['face']
+    json1 = resp.json()["data"]
+    url = json1["face"]
     rsp = requests.get(url)
-    return (rsp, json1['name'])
+    return (rsp, json1["name"])
 
 
 def ip_get():
     """
     由bilibili提供的测ip服务
     """
-    resp = requests.get('http://api.bilibili.com/x/web-interface/zone', timeout=10)
+    resp = requests.get("http://api.bilibili.com/x/web-interface/zone",
+                        timeout=10)
     resp = resp.json()
-    return resp['data']
+    return resp["data"]
 
 
 def get_usr_mid(bv, header):
-    _url = 'http://api.bilibili.com/x/web-interface/view'
-    rsp = requests.get(_url, params={'bvid': bv}, headers=header, timeout=10)
+    _url = "http://api.bilibili.com/x/web-interface/view"
+    rsp = requests.get(_url, params={"bvid": bv}, headers=header, timeout=10)
     json1 = rsp.json()
-    return json1['data']['owner']['mid']
+    return json1["data"]["owner"]["mid"]
 
 
 def analysis(string: str):
@@ -802,7 +824,7 @@ class Save:
         self.ifGetNot = ifGetNot
 
     def load(self):
-        with open(self.filename, 'w') as f:
+        with open(self.filename, "w") as f:
             text = f.read()
         self.analysis(text)
 
@@ -817,6 +839,7 @@ class Save:
 
     def __getitem__(self, text):
         return self.dict.get(text, self.ifGetNot)
+
 
 # test
 # download_video('BV1et411b73Z', headers=header)
