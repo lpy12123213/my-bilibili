@@ -208,7 +208,7 @@ class Setting(object):
             return a or self.set[key] == val
 
     def getKey(self):
-        ret = [i for i in self.set]
+        ret = list(self.set)
         return ret
 
     def getValue(self):
@@ -789,7 +789,7 @@ def analysis(string: str):
             a, b = i.split("-")
             a = int(a)
             b = int(b)
-            ret += [j for j in range(a, b + 1)]
+            ret += list(range(a, b + 1))
     # make it unique and sorted
     ret = list(set(ret))
     return ret
