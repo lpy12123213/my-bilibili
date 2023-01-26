@@ -2,19 +2,15 @@
 # This is a module for bilibili video download.
 """
 import json
-# import time
 import sys
 
 import requests
 import subprocess
 import os
 import re
-# import copy
 import pprint
 from module.ua import ua
-# from module import ua
 from random import choice
-# from Crypto.Cipher import AES
 import base64
 import inspect
 
@@ -248,9 +244,6 @@ class Setting(object):
 
     def __del__(self):
         self.close()
-        # del self.text
-        # del self.io, self.io_r
-        # del self.set
         del self
 
 
@@ -322,7 +315,6 @@ def get_bv_from_url(text):
     return bv[0]
 
 
-# get_bv_from_url('https://www.bilibili.com/video/BV1K5411S7UM?spm_id_from=333.851.b_7265636f6d6d656e64.6')
 
 '''
 检测登录状态
@@ -340,27 +332,9 @@ def get_user_info(headers):
     response.encoding = 'utf-8'
     response.raise_for_status()
     resp = response.json()
-    # if not resp['data']['isLogin']:
-    #     raise LoginError('isLogin is False')
     return response.text
 
 
-# def get_cid(bv, headers):
-#     if bv[:2].lower() == 'av':
-#         bv = av2bv(bv)
-#     __url = "https://api.bilibili.com/x/web-interface/view"
-#     data = {
-#         'bvid': bv,
-#     }
-#     resp = requests.get(__url, headers=headers, params=data)
-#     resp.encoding = 'utf-8'
-#     resp.raise_for_status()
-#     json_response = resp.json()
-#     return_text = []
-#     # print(json_response)
-#     for i in json_response['data']['pages']:
-#         return_text.append(i['cid'])
-#     return return_text
 
 
 def get_cid(bv, headers):
@@ -490,11 +464,6 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
         return 1
     a = ''
     list1 = []
-    # try:
-    #     for i in range(1, page):
-    #         list1.append(download(json[i], bv, i))
-    # except:
-    #     a = download(json, bv, page)
     try:
         if type(json1) == type([1, 2, 3]):
             # url = json1[0]['data']['dash']['video'][0]['baseUrl']
@@ -822,5 +791,3 @@ class Save:
     def __getitem__(self, text):
         return self.dict.get(text, self.ifGetNot)
 
-# test
-# download_video('BV1et411b73Z', headers=header)
