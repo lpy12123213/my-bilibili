@@ -1,6 +1,4 @@
-"""
-# This is a module for bilibili video download.
-"""
+"""# This is a module for bilibili video download."""
 import json
 # import time
 import sys
@@ -127,9 +125,7 @@ class Setting(object):
             self.text: str = f.read()
 
     def saveEnd(self):
-        """
-        Just save the pswList, and close the file.
-        """
+        """Just save the pswList, and close the file."""
         # 用完就挂了,慎用
         if self.isFormat:
             s = json.dumps(self.set, sort_keys=True, indent=4)
@@ -154,17 +150,13 @@ class Setting(object):
             self.set[name[i]] = value[i]
 
     def append(self, dict):
-        """
-        :params `dict`: a dict you will append to the pswList
-        """
+        """:params `dict`: a dict you will append to the pswList"""
         # 链接一个字典
         for i in dict:
             self.set[i] = dict[i]
 
     def __len__(self):
-        """
-        :return the length of self.setting
-        """
+        """:return the length of self.setting"""
         return len(self.set)
 
     def change(self, name, value):
@@ -175,9 +167,7 @@ class Setting(object):
         self.set[name] = value
 
     def get(self, name, default=None):
-        """
-        by dictionary's `get` function
-        """
+        """by dictionary's `get` function"""
         return self.set.get(name, default)
 
     def clear(self):
@@ -188,22 +178,16 @@ class Setting(object):
         self.set.clear()
 
     def delete(self, name):
-        """
-        delete a pair of value and key in self.setting
-        """
+        """delete a pair of value and key in self.setting"""
         del self.set[name]
 
     def memset(self, value):
-        """
-        like `memset` function in c++, but it will only setting all values, not keys
-        """
+        """like `memset` function in c++, but it will only setting all values, not keys"""
         for i in self.set:
             self.set[i] = value
 
     def print(self):
-        """
-        print all values and keys in self.setting
-        """
+        """print all values and keys in self.setting"""
         pprint.pprint(self.set)
 
     def isExists(self, key, val=None):
@@ -566,9 +550,7 @@ def downloadWithJson(json, header, page=None):
 
 
 def kill() -> None:
-    '''
-    # taskill杀进程
-    '''
+    '''# taskill杀进程'''
     subprocess.call(f"taskkill /F /PID aria2c.exe")
     subprocess.call(f"taskkill /F /PID ffmpeg.exe")
 
@@ -750,9 +732,7 @@ def get_usr_pic(id):
 
 
 def ip_get():
-    """
-    由bilibili提供的测ip服务
-    """
+    """由bilibili提供的测ip服务"""
     resp = requests.get('http://api.bilibili.com/x/web-interface/zone', timeout=10)
     resp = resp.json()
     return resp['data']
@@ -794,9 +774,7 @@ def analysis(string: str):
 
 
 class Save:
-    """
-    由json提供的Save
-    """
+    """由json提供的Save"""
 
     def __init__(self, filename, ifGetNot=None):
         self.string = None
