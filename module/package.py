@@ -200,8 +200,7 @@ class Setting(object):
         a = key in self.getKey()
         if val is None:
             return a
-        else:
-            return a or self.set[key] == val
+        return a or self.set[key] == val
 
     def getKey(self):
         ret = [i for i in self.set]

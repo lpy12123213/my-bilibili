@@ -210,8 +210,7 @@ class Setting(object):
         a = key in self.getKey()
         if val is None:
             return a
-        else:
-            return a or self.set[key] == val
+        return a or self.set[key] == val
 
     def getKey(self):
         ret = [i for i in self.set]
@@ -404,23 +403,22 @@ def get_video_info(bv, headers):
         response.raise_for_status()
         resp = response.json()
         return resp
-    else:
-        cid1 = cidlist
-        retlist = []
-        for cid in cid1:
-            _url = 'http://api.bilibili.com/x/player/playurl'
-            _params = {
-                'bvid': bv,
-                'cid': cid,
-                'fnval': '16',
-            }
-            session = sess
-            response = session.get(_url, params=_params, headers=headers, timeout=10)
-            response.encoding = 'utf-8'
-            response.raise_for_status()
-            resp = response.json()
-            retlist.append(resp)
-        return retlist
+    cid1 = cidlist
+    retlist = []
+    for cid in cid1:
+        _url = 'http://api.bilibili.com/x/player/playurl'
+        _params = {
+            'bvid': bv,
+            'cid': cid,
+            'fnval': '16',
+        }
+        session = sess
+        response = session.get(_url, params=_params, headers=headers, timeout=10)
+        response.encoding = 'utf-8'
+        response.raise_for_status()
+        resp = response.json()
+        retlist.append(resp)
+    return retlist
 
 
 def get_video_title_or_desc(bv, headers):
@@ -604,33 +602,32 @@ def search(keywords, headers, pages=0):
                 temp['author'] = data[i]['author']
                 ret.append(temp)
         return ret
-    else:
-        data = {
-            'keyword': keywords,
-            "page": pages
-        }
-        res = requests.get(
-            "http://api.bilibili.com/x/web-interface/search/all/v2",
-            headers=headers,
-            params=data,
-            timeout=10
-        )
-        try:
-            res.raise_for_status()
-        except:
-            return ret
-        js = res.json()
-        try:
-            data = js['data']['result'][10]['data']
-        except:
-            return 1
-        for i in range(len(data)):
-            temp = {}
-            temp['title'] = data[i]['title']
-            temp['bvid'] = data[i]['bvid']
-            temp['author'] = data[i]['author']
-            ret.append(temp)
+    data = {
+        'keyword': keywords,
+        "page": pages
+    }
+    res = requests.get(
+        "http://api.bilibili.com/x/web-interface/search/all/v2",
+        headers=headers,
+        params=data,
+        timeout=10
+    )
+    try:
+        res.raise_for_status()
+    except:
         return ret
+    js = res.json()
+    try:
+        data = js['data']['result'][10]['data']
+    except:
+        return 1
+    for i in range(len(data)):
+        temp = {}
+        temp['title'] = data[i]['title']
+        temp['bvid'] = data[i]['bvid']
+        temp['author'] = data[i]['author']
+        ret.append(temp)
+    return ret
 
 
 def getSearchAdvice(key):
@@ -692,25 +689,24 @@ def get_usr_video(id, ua, pages=None):
                     for i in json1
                     ]
                 return ret
-            else:
-                ret = []
-                p = int(count / 50) + 1
-                for i in range(p):
-                    data = {
-                        'mid': id,
-                        'ps': 50,
-                        'pn': i + 1
-                    }
-                    resp = requests.get(url, headers=headers, params=data,timeout=10)
-                    resp.encoding = "utf-8"
-                    json1 = resp.json()['data']['list']['vlist']
-                    ret += [{'bvid': i['bvid'],
-                            'title': i['title'],
-                            'author': i['author'],
-                            'desc': i['description']}
-                            for i in json1
-                            ]
-                return ret
+            ret = []
+            p = int(count / 50) + 1
+            for i in range(p):
+                data = {
+                    'mid': id,
+                    'ps': 50,
+                    'pn': i + 1
+                }
+                resp = requests.get(url, headers=headers, params=data,timeout=10)
+                resp.encoding = "utf-8"
+                json1 = resp.json()['data']['list']['vlist']
+                ret += [{'bvid': i['bvid'],
+                        'title': i['title'],
+                        'author': i['author'],
+                        'desc': i['description']}
+                        for i in json1
+                        ]
+            return ret
         else:
             ret = []
             data = {
