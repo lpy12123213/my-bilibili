@@ -23,11 +23,6 @@ def get_advice(it):
     b = r.get(
         _url,
         params={"term": it},
-        # proxies={
-        #     "http": "http://127.0.0.1:10809",
-        #     "https": "https://127.0.0.1:10809"
-        # },
-        # proxies=getproxy("222.179.155.90:9091"),
         headers={"user-agant": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                                "Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46 "},
     )

@@ -42,7 +42,6 @@ def main():
     w = Editor(None)
     w.setWindowTitle('Editor')
     w.show()
-    # sys.exit(app.exec_())
     ret = app.exec_()
     print(w.get_value())
 if __name__ == "__main__":
@@ -51,6 +50,5 @@ if __name__ == "__main__":
     w = Editor(None)
     w.setWindowTitle('Editor')
     w.show()
-    # sys.exit(app.exec_())
     ret = app.exec_()
     print(w.get_value())

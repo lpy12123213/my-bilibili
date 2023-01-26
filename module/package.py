@@ -13,7 +13,6 @@ import subprocess
 import threading
 import time
 
-# from module.func import Setting
 import sys
 import os
 import shutil
@@ -239,9 +238,6 @@ class Setting(object):
 
     def __del__(self):
         self.close()
-        # del self.text
-        # del self.io, self.io_r
-        # del self.set
         del self
 
 
@@ -283,8 +279,6 @@ def init():
 def move(file, place):
     if not os.path.exists(place):
         os.makedirs(place)
-    # TODO
-    # shutil.move()
 
 
 def main():

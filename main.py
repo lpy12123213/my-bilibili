@@ -61,9 +61,6 @@ path = setting['workplace']
 if not os.path.isdir(os.path.join(path, "video") + "\\"):
     os.mkdir(os.path.join(path, "video") + "\\")
     logging.debug("创建文件夹video")
-# if not os.path.isdir(os.path.join(path, "temp") + "\\"):
-#     os.mkdir(os.path.join(path, "temp") + "\\")
-#     logging.debug("创建文件夹temp")
 
 if sys.platform != "win32":
     # 判断系统
@@ -372,11 +369,9 @@ class Ui_bilibili_get(QWidget):
         self.cookie_button.clicked.connect(self.getcookie)
         self.sure_button.clicked.connect(self.d)
         self.unsure_button.clicked.connect(self.killer)
-        # self.pushButton.clicked.connect(self.sear)
         self.start_bfq.clicked.connect(self.bfqstart)
         self.pushButton_3.clicked.connect(self.exit2)
         self.pushButton_2.clicked.connect(self.go)
-        # self.pushButton_5.clicked.connect(self.author)
         self.cmdButton.clicked.connect(self.cmdAction)
         self.getUsrInfo.clicked.connect(self.getUsrInfoAction)
         self.findS.clicked.connect(self.sear)
@@ -537,10 +532,6 @@ class Ui_bilibili_get(QWidget):
                     del self.header['cookie']
                 except KeyError:
                     pass
-            # try:
-            #     self.userName.setText(self.usrJsonObj['data']['uname'])
-            # except Exception:
-            #     self.ztl.append("出现错误:cookie值无法验证")
             if self.cookie != '':
                 return
             t = thread.Thread(target=_)
@@ -601,7 +592,6 @@ class Ui_bilibili_get(QWidget):
 
     def d(self) -> None:  # download file
         def download_1(bv):
-            # P = download_video(bv, self.header, path=path)
             P = download_video(bv, self.header)
             if P == 1:
                 print("视频下载失败")
@@ -618,13 +608,6 @@ class Ui_bilibili_get(QWidget):
                 return
             for i in self.bv:
                 cmd = download_1(i)
-                # subprocess.call(cmd['video']['cmd'])
-                # if cmd['music'] is not None:
-                #     subprocess.call(cmd['music']['cmd'])
-                # subprocess.call(cmd['cmd'])
-                # clean(cmd['video']['filename'])
-                # if cmd['music'] is not None:
-                #     clean(cmd['video']['filename'])
 
         do = thread.Thread(target=_)
         do.start()
@@ -660,10 +643,6 @@ class Ui_bilibili_get(QWidget):
         else:
             temp = 1
         for i in lst:
-            # tmp = self.textEdit_2.toHtml()
-            # tmp+=f"{temp} bv:{i['bvid']} title:{i['title']} author:{i['author']}<br>"
-            # self.textEdit_2.setHtml(tmp)
-            # temp += 1
             self.textEdit_2.append(
                 f"{temp} bv:{i['bvid']} title:{i['title']} author:{i['author']}\n")
             temp += 1
@@ -692,7 +671,6 @@ class Ui_bilibili_get(QWidget):
         t = thread.Thread(target=_)
         sys.stdout.close()
         t.start()
-        # os._exit(0)
 
     def exit2(self):
         os._exit(0)
@@ -701,8 +679,6 @@ class Ui_bilibili_get(QWidget):
         def d(bv):
             p = download_video(bv, headers=self.header)
             if p == 0:
-                # logging.debug(
-                    # f"视频信息：{get_video_info(bv, self.header)}")
                 logging.info(f"视频下载完成：{bv}")
             else:
                 self.ztl.append("视频下载失败！")
@@ -721,12 +697,6 @@ class Ui_bilibili_get(QWidget):
             if setting['thread']:
                 for i in need:
                     d(self.result[i - 1]['bvid'])
-                #     t.append(thread.Thread(target=d, args=[
-                #         self.result[i - 1]['bvid']]))
-                # for i in range(int(len(t) / 10 + 1)):
-                #     for j in range(10):
-                #         t[m].start()
-                #         m += 1
             else:
                 for i in need:
                     d(self.result[i]['bvid'])
@@ -764,10 +734,8 @@ class Ui_bilibili_get(QWidget):
 
 def get_bv_from_paste():  # 从剪贴版中获取bilibili链接
     re_1obj = re.compile(r'(?:https|http)://www.bilibili.com/video/([^?/]+)?(?:\?.*){0,1}')
-    # re_1obj = reClass.video['cmp']
     re_2obj = reClass.author['cmp']
     perc = perclip.paste()
-    # ret = [re_1obj.search(perc), re_2obj.search(perc)]
     ret = re_1obj.search(perc)
     # 判断是不是没匹配到，若是，便退出函数
     if ret is None:
@@ -775,15 +743,6 @@ def get_bv_from_paste():  # 从剪贴版中获取bilibili链接
     return ret.group(1)
 
 
-# S = Save("Project1.mybl")
-# try:
-#     S.load()
-#     Flag = True
-# except:
-#     with open("Project1.mybl") as f:
-#         # Create a file
-#         f.close()
-#     Flag = False
 
 
 def main1():
@@ -797,8 +756,6 @@ def main1():
     MainWindow.setWindowIcon(QIcon("bin/ico.ico"))
     MainWindow.resize(1072, 647)
 
-    # if Flag:
-    #     pass
 
     def get_bvid() -> None:
         b = None
@@ -834,7 +791,6 @@ def main1():
     sys.stdout.close()
     sys.stderr.close()
     os._exit(a)
-    # sys.exit()
 
 
 def main2():
@@ -875,8 +831,6 @@ def main2():
         except KeyError:
             ui.ztl.append("出现错误：cookie值好似无法验证，建议重新获取（或检查网络），马上将清除之")
             del ui.header['cookie']
-        # ui.usrJsonObj = get_user_info(ui.header)
-        # ui.userName.setText(ui.usrJsonObj['data']['uname'])
     except:
         pass
     ui.ztl.append("目前只支持下载与获取cookie")
@@ -894,7 +848,6 @@ def main2():
     sys.stdout.close()
     sys.stderr.close()
     os._exit(a)  # 勿改，否则退不出去
-    # sys.exit()
 
 
 if __name__ == '__main__':
