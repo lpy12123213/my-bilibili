@@ -149,7 +149,7 @@ class Setting(object):
         # 设置字典
         if len(name) != len(value):
             raise ValueError(
-                f"The 'name' and 'value' must be the same length.")
+                "The 'name' and 'value' must be the same length.")
         for i in range(len(value)):
             self.set[name[i]] = value[i]
 
@@ -569,8 +569,8 @@ def kill() -> None:
     '''
     # taskill杀进程
     '''
-    subprocess.call(f"taskkill /F /PID aria2c.exe")
-    subprocess.call(f"taskkill /F /PID ffmpeg.exe")
+    subprocess.call("taskkill /F /PID aria2c.exe")
+    subprocess.call("taskkill /F /PID ffmpeg.exe")
 
 
 def search(keywords, headers, pages=0):
