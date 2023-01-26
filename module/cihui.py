@@ -1,4 +1,5 @@
 import os
+
 os.chdir(".\\module")
 with open("词典.txt", encoding="utf-8") as f:
     h = f.read()
