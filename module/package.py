@@ -272,7 +272,6 @@ def init():
         with open("package.json", "w") as f:
             f.write(pcgfile)
         print("PLEASE WRITE PACKAGE.FILE")
-        import sys
         sys.exit(1)
     else:
         global s, config
