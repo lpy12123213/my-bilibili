@@ -809,7 +809,7 @@ def main1():
     # 获取cookie.json文件内容
     try:  # 包含了文件不存在，文件为空的情况
         cookie = setting['cookie']
-        if cookie == '' or cookie == {}:
+        if cookie in ('', {}):
             raise ValueError("cookie值为空")
         ui.header['cookie'] = cookie
         ui.ztl.append("获取cookie成功")
@@ -857,7 +857,7 @@ def main2():
     # 获取cookie.json文件内容
     try:  # 包含了文件不存在，文件为空的情况
         cookie = setting['cookie']
-        if cookie == '' or cookie == {}:
+        if cookie in ('', {}):
             raise ValueError("cookie值为空")
         ui.header['cookie'] = cookie
         ui.ztl.append("获取cookie成功")
