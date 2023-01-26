@@ -730,7 +730,7 @@ def get_usr_video(id, ua, pages=None):
             return ret
     except:
         sys.stderr.write("ERR: 哔哩哔哩发现力(悲)")
-        
+
 
 
 def get_usr_pic(id):
