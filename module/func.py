@@ -305,8 +305,7 @@ if 1:
         '1080P60': 116,
         '4K': 120
     }
-    setting = {}
-    setting['qxd'] = qxd["1080P"]
+    setting = {'qxd': qxd["1080P"]}
     sess = requests.session()
 
 
@@ -598,10 +597,7 @@ def search(keywords, headers, pages=0):
             except:
                 return 1
             for i in range(len(data)):
-                temp = {}
-                temp['title'] = data[i]['title']
-                temp['bvid'] = data[i]['bvid']
-                temp['author'] = data[i]['author']
+                temp = {'title': data[i]['title'], 'bvid': data[i]['bvid'], 'author': data[i]['author']}
                 ret.append(temp)
         return ret
     else:
@@ -625,10 +621,7 @@ def search(keywords, headers, pages=0):
         except:
             return 1
         for i in range(len(data)):
-            temp = {}
-            temp['title'] = data[i]['title']
-            temp['bvid'] = data[i]['bvid']
-            temp['author'] = data[i]['author']
+            temp = {'title': data[i]['title'], 'bvid': data[i]['bvid'], 'author': data[i]['author']}
             ret.append(temp)
         return ret
 
