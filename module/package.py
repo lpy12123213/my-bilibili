@@ -139,8 +139,7 @@ class Setting(object):
         """
         # 设置字典
         if len(name) != len(value):
-            raise ValueError(
-                f"The 'name' and 'value' must be the same length.")
+            raise ValueError("The 'name' and 'value' must be the same length.")
         for i in range(len(value)):
             self.set[name[i]] = value[i]
 
