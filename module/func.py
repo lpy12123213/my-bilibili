@@ -584,6 +584,7 @@ def kill() -> None:
     subprocess.call("taskkill /F /PID aria2c.exe")
     subprocess.call("taskkill /F /PID ffmpeg.exe")
 
+
 def search(keywords, headers, pages=0):
     ret = []
     s = Setting("../setting.json", mode="r")
