@@ -205,7 +205,7 @@ class Setting(object):
             return a or self.set[key] == val
 
     def getKey(self):
-        ret = [i for i in self.set]
+        ret = list(self.set)
         return ret
 
     def getValue(self):

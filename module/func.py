@@ -223,7 +223,7 @@ class Setting(object):
             return a or self.set[key] == val
 
     def getKey(self):
-        ret = [i for i in self.set]
+        ret = list(self.set)
         return ret
 
     def getValue(self):
@@ -283,7 +283,7 @@ def bv2av(x: str):
 
 
 def av2bv(x):
-    if type(x) == type(" "):
+    if type(x) is type(" "):
         x = int(x[2:])
     x = (x ^ xor) + add
     r = list("BV1  4 1 7  ")
@@ -312,8 +312,7 @@ if 1:
         "1080P60": 116,
         "4K": 120,
     }
-    setting = {}
-    setting["qxd"] = qxd["1080P"]
+    setting = {"qxd": qxd["1080P"]}
     sess = requests.session()
 
 
@@ -514,7 +513,7 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
     # except:
     #     a = download(json, bv, page)
     try:
-        if type(json1) == type([1, 2, 3]):
+        if type(json1) is type([1, 2, 3]):
             # url = json1[0]['data']['dash']['video'][0]['baseUrl']
             # for i in json1:
             # 远程主机未响应
@@ -603,7 +602,6 @@ def kill() -> None:
     subprocess.call("taskkill /F /PID aria2c.exe")
     subprocess.call("taskkill /F /PID ffmpeg.exe")
 
-
 def search(keywords, headers, pages=0):
     ret = []
     s = Setting("../setting.json", mode="r")
@@ -626,10 +624,11 @@ def search(keywords, headers, pages=0):
             except:
                 return 1
             for i in range(len(data)):
-                temp = {}
-                temp["title"] = data[i]["title"]
-                temp["bvid"] = data[i]["bvid"]
-                temp["author"] = data[i]["author"]
+                temp = {
+                    "title": data[i]["title"],
+                    "bvid": data[i]["bvid"],
+                    "author": data[i]["author"],
+                }
                 ret.append(temp)
         return ret
     else:
@@ -650,10 +649,11 @@ def search(keywords, headers, pages=0):
         except:
             return 1
         for i in range(len(data)):
-            temp = {}
-            temp["title"] = data[i]["title"]
-            temp["bvid"] = data[i]["bvid"]
-            temp["author"] = data[i]["author"]
+            temp = {
+                "title": data[i]["title"],
+                "bvid": data[i]["bvid"],
+                "author": data[i]["author"],
+            }
             ret.append(temp)
         return ret
 
@@ -808,7 +808,7 @@ def analysis(string: str):
             a, b = i.split("-")
             a = int(a)
             b = int(b)
-            ret += [j for j in range(a, b + 1)]
+            ret += list(range(a, b + 1))
     # make it unique and sorted
     ret = list(set(ret))
     return ret
