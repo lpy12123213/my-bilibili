@@ -154,8 +154,7 @@ class Setting(object):
         """
         # 设置字典
         if len(name) != len(value):
-            raise ValueError(
-                f"The 'name' and 'value' must be the same length.")
+            raise ValueError("The 'name' and 'value' must be the same length.")
         for i in range(len(value)):
             self.set[name[i]] = value[i]
 
@@ -268,7 +267,7 @@ def bv2av(x: str):
 
 
 def av2bv(x):
-    if type(x) == type(" "):
+    if type(x) is type(" "):
         x = int(x[2:])
     x = (x ^ xor) + add
     r = list("BV1  4 1 7  ")
@@ -297,8 +296,7 @@ if 1:
         "1080P60": 116,
         "4K": 120,
     }
-    setting = {}
-    setting["qxd"] = qxd["1080P"]
+    setting = {"qxd": qxd["1080P"]}
     sess = requests.session()
 
 
@@ -499,7 +497,7 @@ def download_video(bv, headers, page=1, isLog=True, path="."):
     # except:
     #     a = download(json, bv, page)
     try:
-        if type(json1) == type([1, 2, 3]):
+        if type(json1) is type([1, 2, 3]):
             # url = json1[0]['data']['dash']['video'][0]['baseUrl']
             # for i in json1:
             # 远程主机未响应
@@ -583,9 +581,8 @@ def downloadWithJson(json, header, page=None):
 
 def kill() -> None:
     """# taskill杀进程"""
-    subprocess.call(f"taskkill /F /PID aria2c.exe")
-    subprocess.call(f"taskkill /F /PID ffmpeg.exe")
-
+    subprocess.call("taskkill /F /PID aria2c.exe")
+    subprocess.call("taskkill /F /PID ffmpeg.exe")
 
 def search(keywords, headers, pages=0):
     ret = []
@@ -609,10 +606,11 @@ def search(keywords, headers, pages=0):
             except:
                 return 1
             for i in range(len(data)):
-                temp = {}
-                temp["title"] = data[i]["title"]
-                temp["bvid"] = data[i]["bvid"]
-                temp["author"] = data[i]["author"]
+                temp = {
+                    "title": data[i]["title"],
+                    "bvid": data[i]["bvid"],
+                    "author": data[i]["author"],
+                }
                 ret.append(temp)
         return ret
     else:
@@ -633,10 +631,11 @@ def search(keywords, headers, pages=0):
         except:
             return 1
         for i in range(len(data)):
-            temp = {}
-            temp["title"] = data[i]["title"]
-            temp["bvid"] = data[i]["bvid"]
-            temp["author"] = data[i]["author"]
+            temp = {
+                "title": data[i]["title"],
+                "bvid": data[i]["bvid"],
+                "author": data[i]["author"],
+            }
             ret.append(temp)
         return ret
 
