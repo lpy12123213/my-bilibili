@@ -1,16 +1,20 @@
-import sys
+import sys, os
+import threading
+import time
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
+
 try:
     from func import Setting as _setting
-except:
+except Exception as err:
+    print(err)
     from module.func import Setting as _setting
 
 # 先来个窗口
-setting = _setting('./setting.json')
-
+setting = _setting('./SETTING/setting.json')
+print(setting.set)
 
 class window1(QWidget):
     def __init__(self):
@@ -32,6 +36,18 @@ class window1(QWidget):
     def get_cookie(self):
         self.cookie = self.web.get_cookie()
         print('获取到cookie: ', self.cookie, '\n')
+        self.btn_get.setText("已点击，3秒之后退出")
+        setting['cookie'] = main_demo.cookie
+        setting.saveEnd()
+        self.btn_get.setEnabled(False)
+        def __exit():
+            for i in range(3, 0, -1):
+                self.btn_get.setText(f"已点击，{i}秒之后退出")
+                time.sleep(1)
+            os._exit(0)
+
+        a = threading.Thread(target=__exit)
+        a.start()
 
 
 # 创建自己的浏览器控件，继承自QWebEngineView
@@ -60,9 +76,6 @@ def open_web():
     main_demo = window1()
     main_demo.show()
     my_application.exec_()
-    set = _setting('./setting.json')
-    set['cookie'] = main_demo.cookie
-    set.saveEnd()
 
 
 if __name__ == '__main__':

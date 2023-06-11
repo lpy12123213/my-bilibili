@@ -3,22 +3,19 @@ r"""
 支持使用网页端登录，简易播放视频（不建议）
 目前暂时支持使用bilibili api下载视频，未来会考虑使用BBDown下载
 本人不对此软件造成的后果负责
-TODO: 实现选择路径
 """
 # 自带库
 import datetime
 import logging
 import threading as thread  # 导入线程模块, 之后要用
 import time
-
 # 第三方库
 import pyperclip as perclip
 import qdarkstyle
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QRegExp, QThread, pyqtSignal
-from PyQt5.QtGui import QBrush, QIcon, QPalette, QPixmap, QRegExpValidator
+from PyQt5.QtCore import pyqtSignal, QThread, QRegExp
+from PyQt5.QtGui import QPalette, QPixmap, QBrush, QIcon, QRegExpValidator
 from PyQt5.QtWidgets import QApplication, QWidget
-
 # 自鸡的库
 from module import reClass
 from module.cihui import ch
@@ -26,12 +23,12 @@ from module.func import *
 from module.ua import ua as user_agant
 
 ua = user_agant
-setting = Setting("setting.json")
-print(setting.set)
-if not setting["isDebugging"]:
+setting = Setting('SETTING/setting.json')
+# print(setting.set)
+if not setting['isDebugging']:
     sys.stdout = open(".\\log\\print.out", "a")
 N = "%Y-%m-%d %H:%m:%S(%p)"
-if not setting["isDebugging"]:
+if not setting['isDebugging']:
     sys.stderr = open(".\\log\\main.err", "a")
 print(datetime.datetime.now().strftime(N))
 __version__ = "0.0.3"
@@ -40,16 +37,14 @@ flag = True
 path = os.getcwd()
 os.chdir(path)
 headers = {
-    "user-agent": choice(ua)
+    'user-agent': choice(ua)
     # 'user-agant': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 "
     #               "Safari/537.36 Edg/105.0.1343.27 "
 }
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(filename)s %(levelname)s %(message)s",
-    filename=".\\log\\.log",
-    encoding="utf-8",
-)
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(filename)s %(levelname)s %(message)s',
+                    filename='.\\log\\.log',
+                    encoding="utf-8")
 # path = setting['workplace']
 # if not os.path.isdir(os.path.join(path, "video") + "\\"):
 #     os.mkdir(os.path.join(path, "video") + "\\")
@@ -61,28 +56,27 @@ logging.basicConfig(
 if sys.platform != "win32":
     # 判断系统
     print("暂时只有windows可以使用，其它系统暂不知道")
-    isContinue = input('若想继续，请按"Yes"，可能会有少数功能失效 \nReally?[Yes/No]')
-    if isContinue.lower() == "no" or isContinue.lower() == "n":
+    isContinue = input("若想继续，请按\"Yes\"，可能会有少数功能失效 \nReally?[Yes/No]")
+    if isContinue.lower() == 'no' or isContinue.lower() == 'n':
         time.sleep(3)
         sys.exit(114514)  # 你是一个一个的程序啊!
     del isContinue
 
 
 class QSSLoader:
-
     def __init__(self):
         pass
 
     @staticmethod
     def readQssFile(qss_file_name):
-        with open(qss_file_name, "r", encoding="UTF-8") as file:
+        with open(qss_file_name, 'r', encoding='UTF-8') as file:
             return file.read()
 
 
-if setting["Qss"].lower() != "other":
-    style_sheet = QSSLoader.readQssFile(setting["Qss"])
+if setting['Qss'].lower() != 'other':
+    style_sheet = QSSLoader.readQssFile(setting['Qss'])
 else:
-    style_sheet = qdarkstyle.load_stylesheet_pyqt5()
+    style_sheet = (qdarkstyle.load_stylesheet_pyqt5())
 
 
 class Thread1(QThread):
@@ -96,7 +90,7 @@ class Thread1(QThread):
         self.header = header
 
     def run(self):
-        for i in range(1, setting["mostSearch"] + 1):
+        for i in range(1, setting['mostSearch'] + 1):
             self.result = search(self.key, self.header, i)
             self.signal.emit(self.result, True, (i - 1) * 20)
             time.sleep(0.5)
@@ -135,10 +129,8 @@ class ThreadForAdvice(QThread):
         except:
             logging.warning("获取搜索建议时触发风控")
             return
-        self.advice = [
-            self.respForSearchAdvice[str(i)]
-            for i in range(len(self.respForSearchAdvice))
-        ]
+        self.advice = [self.respForSearchAdvice[str(i)]
+                       for i in range(len(self.respForSearchAdvice))]
         self.signal.emit(self.advice)
 
 
@@ -222,8 +214,8 @@ class Ui_bilibili_get(QWidget):
         self.textEdit_2.setReadOnly(True)
         self.textEdit_2.setObjectName("textEdit_2")
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.tab_5)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(
-            700, 0, 351, 41))
+        self.horizontalLayoutWidget_2.setGeometry(
+            QtCore.QRect(700, 0, 351, 41))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(
             self.horizontalLayoutWidget_2)
@@ -388,72 +380,69 @@ class Ui_bilibili_get(QWidget):
         bilibili_get.setWindowTitle(_translate("bilibili_get", "Widget"))
         self.cookie_button.setText(_translate("bilibili_get", "获得cookie"))
         self.start_bfq.setText(_translate("bilibili_get", "启动播放器"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab),
-                                  _translate("bilibili_get", "主页"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab), _translate("bilibili_get", "主页"))
         self.lineEdit_2.setPlaceholderText(
             _translate("bilibili_get", "选定范围（就是每个结果前面的）"))
         self.pushButton_2.setText(_translate("bilibili_get", "sure"))
         self.lineEdit.setPlaceholderText(_translate("bilibili_get", "搜索内容"))
         self.findS.setText(_translate("bilibili_get", "寻找"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5),
-                                  _translate("bilibili_get", "搜索列表"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab_5), _translate("bilibili_get", "搜索列表"))
         self.authorMid.setPlaceholderText(_translate("bilibili_get", "作者id"))
         self.getUsrInfo.setText(_translate("bilibili_get", "解析作者"))
         self.input_a.setPlaceholderText(
             _translate("bilibili_get", "输入下载区间，详见“关于”"))
         self.okForAuthor.setText(_translate("bilibili_get", "确定"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2),
-                                  _translate("bilibili_get", "作者解析"))
-        self.about.setHtml(
-            _translate(
-                "bilibili_get",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" '
-                '"http://www.w3.org/TR/REC-html40/strict.dtd">\n '
-                '<html><head><meta name="qrichtext" content="1" /><meta charset="utf-8" '
-                '/><style type="text/css">\n '
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'Microsoft YaHei UI'; "
-                'font-size:9pt; font-weight:400; font-style:normal;">\n '
-                '<ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; '
-                'margin-right: 0px; -qt-list-indent: 1;"><li style=" font-family:\'Open '
-                "Sans','Helvetica Neue','Helvetica','Arial','sans-serif'; "
-                'color:#606c71;" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; '
-                "margin-right:0px; -qt-block-indent:0; "
-                'text-indent:0px;">本软件只提供视频解析，不提供任何资源上传、存储到服务器的功能。</li>\n '
-                "<li style=\" font-family:'Open Sans','Helvetica Neue','Helvetica',"
-                "'Arial','sans-serif'; color:#606c71;\" style=\" margin-top:0px; "
-                "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
-                'text-indent:0px;">本软件仅解析来自B站的内容，不会对解析到的音视频进行二次编码，部分视频会进行有限的格式转换、拼接等操作。</li>\n '
-                "<li style=\" font-family:'Open Sans','Helvetica Neue','Helvetica',"
-                "'Arial','sans-serif'; color:#606c71;\" style=\" margin-top:0px; "
-                "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
-                'text-indent:0px;">本软件解析得到的所有内容均来自B站UP主上传、分享，其版权均归原作者所有。内容提供者、上传者（UP'
-                "主）应对其提供、上传的内容承担全部责任。</li>\n "
-                "<li style=\" font-family:'Open Sans','Helvetica Neue','Helvetica',"
-                "'Arial','sans-serif'; color:#606c71;\" style=\" margin-top:0px; "
-                "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
-                'text-indent:0px;"><span style=" '
-                'font-weight:700;">本软件提供的所有内容，仅可用作学习交流使用，未经原作者授权，禁止用于其他用途。请在下载24'
-                "小时内删除。为尊重作者版权，请前往资源的原始发布网站观看，支持原创，谢谢。</span></li>\n "
-                "<li style=\" font-family:'Open Sans','Helvetica Neue','Helvetica',"
-                "'Arial','sans-serif'; color:#606c71;\" style=\" margin-top:0px; "
-                "margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
-                'text-indent:0px;">因使用本软件产生的版权问题，软件作者概不负责。</li></ol>\n '
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; '
-                'margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" '
-                "font-family:'Open Sans','Helvetica Neue','Helvetica','Arial',"
-                "'sans-serif'; color:#606c71;\"><br /></span></p></body></html>",
-            ))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab_2), _translate("bilibili_get", "作者解析"))
+        self.about.setHtml(_translate("bilibili_get",
+                                      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+                                      "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n "
+                                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" "
+                                      "/><style type=\"text/css\">\n "
+                                      "p, li { white-space: pre-wrap; }\n"
+                                      "</style></head><body style=\" font-family:\'Microsoft YaHei UI\'; "
+                                      "font-size:9pt; font-weight:400; font-style:normal;\">\n "
+                                      "<ol style=\"margin-top: 0px; margin-bottom: 0px; margin-left: 0px; "
+                                      "margin-right: 0px; -qt-list-indent: 1;\"><li style=\" font-family:\'Open "
+                                      "Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',\'sans-serif\'; "
+                                      "color:#606c71;\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+                                      "margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">本软件只提供视频解析，不提供任何资源上传、存储到服务器的功能。</li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">本软件仅解析来自B站的内容，不会对解析到的音视频进行二次编码，部分视频会进行有限的格式转换、拼接等操作。</li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">本软件解析得到的所有内容均来自B站UP主上传、分享，其版权均归原作者所有。内容提供者、上传者（UP"
+                                      "主）应对其提供、上传的内容承担全部责任。</li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\"><span style=\" "
+                                      "font-weight:700;\">本软件提供的所有内容，仅可用作学习交流使用，未经原作者授权，禁止用于其他用途。请在下载24"
+                                      "小时内删除。为尊重作者版权，请前往资源的原始发布网站观看，支持原创，谢谢。</span></li>\n "
+                                      "<li style=\" font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',"
+                                      "\'Arial\',\'sans-serif\'; color:#606c71;\" style=\" margin-top:0px; "
+                                      "margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+                                      "text-indent:0px;\">因使用本软件产生的版权问题，软件作者概不负责。</li></ol>\n "
+                                      "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+                                      "margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+                                      "font-family:\'Open Sans\',\'Helvetica Neue\',\'Helvetica\',\'Arial\',"
+                                      "\'sans-serif\'; color:#606c71;\"><br /></span></p></body></html>"))
         self.label_4.setText(_translate("bilibili_get", "关于"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3),
-                                  _translate("bilibili_get", "关于"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab_3), _translate("bilibili_get", "关于"))
         self.cmd.setPlaceholderText(_translate("bilibili_get", "命令"))
         self.cmdButton.setText(_translate("bilibili_get", "执行"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4),
-                                  _translate("bilibili_get", "命令页"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab_4), _translate("bilibili_get", "命令页"))
         self.label_2.setText(_translate("bilibili_get", "正在下载："))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6),
-                                  _translate("bilibili_get", "下载页"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab_6), _translate("bilibili_get", "下载页"))
         self.bv_line.setPlaceholderText(_translate("bilibili_get", "bv号"))
         self.sure_button.setText(_translate("bilibili_get", "确定"))
         self.unsure_button.setText(_translate("bilibili_get", "取消"))
@@ -469,8 +458,8 @@ class Ui_bilibili_get(QWidget):
 
     def initUI(self):
         self.authorMid.setValidator(QRegExpValidator(QRegExp(r"[0-9]*"), self))
-        self.bv_line.setValidator(
-            QRegExpValidator(QRegExp(r"[0-9A-Za-z, ]*"), self))
+        self.bv_line.setValidator(QRegExpValidator(
+            QRegExp(r"[0-9A-Za-z, ]*"), self))
         self.input_a.setValidator(
             QRegExpValidator(QRegExp(r"[0-9 \-,]*"), self))
         self.lineEdit_2.setValidator(
@@ -479,11 +468,10 @@ class Ui_bilibili_get(QWidget):
             self.textEdit_2.verticalScrollBar().maximum())
 
     def delCookie(self):
-        setting["cookie"] = {}
+        setting['cookie'] = {}
         setting.save()
 
     def stt(self):
-
         def _():
             if os.path.exists("setting.pyw"):
                 subprocess.call("python setting.pyw")
@@ -494,9 +482,7 @@ class Ui_bilibili_get(QWidget):
         t.start()
 
     def getcookie(self):
-
         def _():
-
             def _():
                 self.ztl.append("！！请打开open1.py文件并获得cookie，之后重新点击此按钮！！")
                 if not os.path.exists("module/open1.pyw"):
@@ -507,7 +493,7 @@ class Ui_bilibili_get(QWidget):
 
             try:
                 setting.refresh()
-                self.cookie = setting["cookie"]
+                self.cookie = setting['cookie']
                 if self.cookie == "":
                     raise ValueError("cookie文件无效")
             except ValueError:
@@ -517,8 +503,8 @@ class Ui_bilibili_get(QWidget):
                 t.start()
                 return
             if self.cookie != {}:
-                self.header["cookie"] = self.cookie
-            if type(self.cookie) != type(""):
+                self.header['cookie'] = self.cookie
+            if type(self.cookie) != type(''):
                 try:
                     raise ValueError(
                         f"Cookie must be a string, not a {type(self.cookie)}")
@@ -529,10 +515,9 @@ class Ui_bilibili_get(QWidget):
                     t.start()
                     return
             self.ztl.append(
-                f"已获取cookie: {self.cookie[:50]}...\n程序不会记录您的cookie值，也请您在传播时注意cookie的保护"
-            )
-            logging.info("已获取cookie")
-            logging.debug(f"用户cookie值: {self.cookie[:50]}...")
+                f"已获取cookie: {self.cookie[:50]}...\n程序不会记录您的cookie值，也请您在传播时注意cookie的保护")
+            logging.info('已获取cookie')
+            logging.debug(f'用户cookie值: {self.cookie[:50]}...')
             try:
                 self.usrJsonObj = get_user_info(headers=self.header)
                 self.userName.setText(
@@ -540,14 +525,14 @@ class Ui_bilibili_get(QWidget):
             except KeyError:
                 self.ztl.append("出现错误：cookie值好似无法验证，建议重新获取，马上将清除之")
                 try:
-                    del self.header["cookie"]
+                    del self.header['cookie']
                 except KeyError:
                     pass
             # try:
             #     self.userName.setText(self.usrJsonObj['data']['uname'])
             # except Exception:
             #     self.ztl.append("出现错误:cookie值无法验证")
-            if self.cookie != "":
+            if self.cookie != '':
                 return
             t = thread.Thread(target=_)
             t.start()
@@ -558,8 +543,7 @@ class Ui_bilibili_get(QWidget):
 
     def getUsrInfoAction(self):
         self.resultForAuthor = []
-        if not setting.isExists("cookie", {}) and not setting.isExists(
-                "cookie", ""):
+        if not setting.isExists("cookie", {}) and not setting.isExists("cookie", ""):
             self.textEdit_2.insertHtml("<h1>cookie不存在</h1>")
             return
         self.usrId = self.authorMid.text()
@@ -582,8 +566,7 @@ class Ui_bilibili_get(QWidget):
         self.resultForAuthor += lst
         for i in range(int1 - 1, len(lst)):
             self.videoOfAuthor.append(
-                f"{i + 1} BVID: {lst[i - 1]['bvid']} TITLE: {lst[i - 1]['title']}"
-            )
+                f"{i + 1} BVID: {lst[i - 1]['bvid']} TITLE: {lst[i - 1]['title']}")
 
     def sortForAuthor(self):
         self.videoOfAuthor.clear()
@@ -594,11 +577,11 @@ class Ui_bilibili_get(QWidget):
             m += 1
 
     def downloadUsrVideo(self):
-
         def d(bv):
             p = download_video(bv, headers=self.header)
             if p == 0:
-                logging.debug(f"视频信息：{get_video_info(bv, self.header)}")
+                logging.debug(
+                    f"视频信息：{get_video_info(bv, self.header)}")
                 logging.info(f"视频下载完成：{bv}")
             else:
                 self.ztl.append("视频下载失败！")
@@ -608,7 +591,6 @@ class Ui_bilibili_get(QWidget):
             need = analysis(self.lineEdit_2.text())
 
     def d(self) -> None:  # download file
-
         def download_1(bv):
             # P = download_video(bv, self.header, path=path)
             P = download_video(bv, self.header, path=setting["path"])
@@ -640,7 +622,6 @@ class Ui_bilibili_get(QWidget):
         del _
 
     def killer(self) -> None:  # taskkill aria2c and ffmpeg
-
         def _():
             kill()
 
@@ -651,8 +632,7 @@ class Ui_bilibili_get(QWidget):
     def sear(self) -> None:
         self.result: list[dict]
         self.result = []
-        if not setting.isExists("cookie", {}) or not setting.isExists(
-                "cookie", ""):
+        if not setting.isExists("cookie", {}) or not setting.isExists("cookie", ""):
             self.textEdit_2.insertHtml("<h1>cookie不存在</h1>")
             return
         self.textEdit_2.clear()
@@ -676,14 +656,12 @@ class Ui_bilibili_get(QWidget):
             # self.textEdit_2.setHtml(tmp)
             # temp += 1
             self.textEdit_2.append(
-                f"{temp} bv:{i['bvid']} title:{i['title']} author:{i['author']}\n"
-            )
+                f"{temp} bv:{i['bvid']} title:{i['title']} author:{i['author']}\n")
             temp += 1
 
     def bfqstart(self):
-
         def _():
-            if not os.path.exists("module/player.exe"):
+            if not os.path.exists('module/player.exe'):
                 subprocess.call("python module/player.pyw")
             else:
                 subprocess.call("start module/player.exe")
@@ -692,14 +670,13 @@ class Ui_bilibili_get(QWidget):
         t.start()
 
     def exit(self) -> None:
-
         def _():
-            if __file__.split(".")[-1] == "py":
+            if __file__.split('.')[-1] == 'py':
                 subprocess.call("taskkill /F /PID python.exe")
                 subprocess.call("taskkill /F /PID pythonw.exe")
-            elif __file__.split(".")[-1] == "exe":
+            elif __file__.split('.')[-1] == 'exe':
                 subprocess.call("taskkill /F /PID %s" %
-                                __file__.split("\\")[-1])
+                                __file__.split('\\')[-1])
             subprocess.call("taskkill /F /PID ffmpeg.exe")
             subprocess.call("taskkill /F /PID aria2c.exe")
 
@@ -712,7 +689,6 @@ class Ui_bilibili_get(QWidget):
         os._exit(0)
 
     def go(self):
-
         def d(bv):
             p = download_video(bv, headers=self.header)
             if p == 0:
@@ -727,15 +703,15 @@ class Ui_bilibili_get(QWidget):
             if self.result is None:
                 return
             fw = self.lineEdit_2.text()  # fw代表范围
-            fw = fw.replace(" ", "")
-            fw = fw.split(",")
+            fw = fw.replace(' ', '')
+            fw = fw.split(',')
             t = []
 
             m = 0
             need = analysis(self.lineEdit_2.text())
-            if setting["thread"]:
+            if setting['thread']:
                 for i in need:
-                    d(self.result[i - 1]["bvid"])
+                    d(self.result[i - 1]['bvid'])
                 #     t.append(thread.Thread(target=d, args=[
                 #         self.result[i - 1]['bvid']]))
                 # for i in range(int(len(t) / 10 + 1)):
@@ -744,13 +720,12 @@ class Ui_bilibili_get(QWidget):
                 #         m += 1
             else:
                 for i in need:
-                    d(self.result[i]["bvid"])
+                    d(self.result[i]['bvid'])
 
         t0bj = thread.Thread(target=_)
         t0bj.start()
 
     def cmdAction(self):
-
         def _():
             ans = 0
             ac = self.cmd.toPlainText()
@@ -763,7 +738,7 @@ class Ui_bilibili_get(QWidget):
                 self.command = f"ans = {ac}"
                 loc = locals()
                 exec(self.command)
-                ans = loc["ans"]
+                ans = loc['ans']
                 self.cmdReturn.setText(str(ans))
             except:
                 try:
@@ -780,9 +755,9 @@ class Ui_bilibili_get(QWidget):
 
 def get_bv_from_paste():  # 从剪贴版中获取bilibili链接
     re_1obj = re.compile(
-        r"(?:https|http)://www.bilibili.com/video/([^?/]+)?(?:\?.*){0,1}")
+        r'(?:https|http)://www.bilibili.com/video/([^?/]+)?(?:\?.*){0,1}')
     # re_1obj = reClass.video['cmp']
-    re_2obj = reClass.author["cmp"]
+    re_2obj = reClass.author['cmp']
     perc = perclip.paste()
     # ret = [re_1obj.search(perc), re_2obj.search(perc)]
     ret = re_1obj.search(perc)
@@ -832,10 +807,10 @@ def main1():
     t1obj.start()
     # 获取cookie.json文件内容
     try:  # 包含了文件不存在，文件为空的情况
-        cookie = setting["cookie"]
-        if cookie in ("", {}):
+        cookie = setting['cookie']
+        if cookie == '' or cookie == {}:
             raise ValueError("cookie值为空")
-        ui.header["cookie"] = cookie
+        ui.header['cookie'] = cookie
         ui.ztl.append("获取cookie成功")
         try:
             ui.usrJsonObj = get_user_info(headers=ui.header)
@@ -843,7 +818,7 @@ def main1():
                 f'{json.loads(ui.usrJsonObj)["data"]["uname"]}')
         except KeyError:
             ui.ztl.append("出现错误：cookie值好似无法验证，建议重新获取（或检查网络），马上将清除之")
-            del ui.header["cookie"]
+            del ui.header['cookie']
     except:
         pass
     MainWindow.show()
@@ -880,10 +855,10 @@ def main2():
     t1obj.start()
     # 获取cookie.json文件内容
     try:  # 包含了文件不存在，文件为空的情况
-        cookie = setting["cookie"]
-        if cookie in ("", {}):
+        cookie = setting['cookie']
+        if cookie == '' or cookie == {}:
             raise ValueError("cookie值为空")
-        ui.header["cookie"] = cookie
+        ui.header['cookie'] = cookie
         ui.ztl.append("获取cookie成功")
         try:
             ui.usrJsonObj = get_user_info(headers=ui.header)
@@ -891,7 +866,7 @@ def main2():
                 f'{json.loads(ui.usrJsonObj)["data"]["uname"]}')
         except KeyError:
             ui.ztl.append("出现错误：cookie值好似无法验证，建议重新获取（或检查网络），马上将清除之")
-            del ui.header["cookie"]
+            del ui.header['cookie']
         # ui.usrJsonObj = get_user_info(ui.header)
         # ui.userName.setText(ui.usrJsonObj['data']['uname'])
     except:

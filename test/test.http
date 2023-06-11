@@ -1,0 +1,2 @@
+GET https://cdn.jsdelivr.net/gh/lpy12123213/my-bilibili@main/gx.json
+client.log("this is log");

@@ -8,13 +8,13 @@ from PyQt5.QtWidgets import QFileDialog
 from module.func import Setting
 from time import sleep
 
-s = Setting('setting.json')
+s = Setting('SETTING/setting.json')
 
 s.init_({'Qss': './bin/style/style.qss', 'cookie': {}, 'downloadAll': True,
          'isBBDown': False, 'isCookieExists': False, 'isDebugging': False, 'isFirst': False, 'isLogin': True,
          'isNeedBackground': False, 'isNeedLogin': True, 'mostSearch': 5, 'path': '.', 'playerEverytime': False,
          'proxy': {'http': '', 'https': ''}, 'startSetting': False, 'thread': True, "whoToChoose": "general",
-         "isPY": True})
+         "isPY": True, "version": "0.1.0"})
 s['cookie'] = ''
 s.saveEnd()
 
@@ -36,7 +36,7 @@ else:
 
 
 class Ui_Setting(object):
-    s = Setting('setting.json')
+    s = Setting('SETTING/setting.json')
 
     def setupUi(self, Setting):
         Setting.setObjectName("Setting")
@@ -209,7 +209,7 @@ class Ui_Setting(object):
         self.downloadAll.setChecked(s['downloadAll'])
         self.isBBDown.setChecked(s['isBBDown'])
         self.start.setChecked(s['startSetting'])
-        self.cookie.setText(s["cookie"] if s["cookie"] != {} or s["cookie"] != "" else "")
+        self.cookie.setText(str(s["cookie"]))
         self.mostSearch.setText(str(s["mostSearch"]))
 
 

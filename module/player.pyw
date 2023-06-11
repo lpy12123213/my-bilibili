@@ -11,7 +11,7 @@ headers = {
     'user-agent': choice(ua)
 }
 try:
-    set = Setting("./setting.json", mode='r')
+    set = Setting("./SETTING/setting.json", mode='r')
     # set = Setting("../setting.json", mode='r')
     headers['cookie'] = set['cookie']
 except FileNotFoundError:

@@ -1,0 +1,7 @@
+video/
+background.jpg
+SETTING/
+temp/
+.idea/
+__pycache__/
+log/
